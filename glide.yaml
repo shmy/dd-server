@@ -1,0 +1,26 @@
+package: github.com/shmy/dd-server
+import:
+- package: github.com/shirou/gopsutil
+  version: ^2.18.5
+  subpackages:
+  - cpu
+  - disk
+  - load
+  - mem
+- package: golang.org/x/sys
+  repo: https://github.com/golang/sys
+  vcs: git
+- package: golang.org/x/text
+  repo: https://github.com/golang/text
+  vcs: git
+- package: golang.org/x/crypto
+  repo: https://github.com/golang/crypto
+  vcs: git
+- package: github.com/lexkong/log
+- package: github.com/spf13/viper
+  version: ^1.0.2
+- package: github.com/globalsign/mgo
+- package: github.com/dgrijalva/jwt-go
+  version: ^3.2.0
+- package: github.com/labstack/echo
+  version: ^3.3.5

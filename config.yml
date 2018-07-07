@@ -1,0 +1,26 @@
+runmode: debug                 # 开发模式: debug, release
+
+server:
+  host: 127.0.0.1         # 监听的ip地址
+  port: 1994              # 监听的端口
+
+mongodb:
+  address:
+    - 127.0.0.1:27017     # 数据库服务器的地址 端口 可以多个
+  database: dy            # 数据库名称
+  username: root          # 用户名 可选
+  password: example       # 密码 可选
+
+jsonwebtoken:
+  client:
+    secret: "`!#-$+&*@(^&)`"      # 密钥
+    overdue: 86400                # 过期时间 秒
+log:
+  writers: file,stdout
+  logger_level: INFO
+  logger_file: log/dd-server.log
+  log_format_text: true
+  rollingPolicy: size
+  log_rotate_date: 1
+  log_rotate_size: 1
+  log_backup_count: 7
