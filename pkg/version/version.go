@@ -7,6 +7,8 @@ import (
 
 // Info contains versioning information.
 type Info struct {
+	Version       string `json:"version"`
+	Author       string `json:"author"`
 	GitTag       string `json:"gitTag"`
 	GitCommit    string `json:"gitCommit"`
 	GitTreeState string `json:"gitTreeState"`
@@ -23,6 +25,8 @@ func (info Info) String() string {
 
 func Get() Info {
 	return Info{
+		Version: 	  version,
+		Author: 	  author,
 		GitTag:       gitTag,
 		GitCommit:    gitCommit,
 		GitTreeState: gitTreeState,

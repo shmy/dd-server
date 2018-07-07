@@ -1,6 +1,8 @@
 package version
 
 var (
+	version  	 string = "0.0.1"
+	author  	 string = "SHMY"
 	gitTag       string = ""
 	gitCommit    string = "$Format:%H$"          // sha1 from git, output of $(git rev-parse HEAD)
 	gitTreeState string = "not a git tree"       // state of git tree, either "clean" or "dirty"
