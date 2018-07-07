@@ -20,6 +20,7 @@ var (
 	version = pflag.BoolP("version", "v", false, "show version info.")
 )
 func main() {
+	// 命令获取版本号信息
 	pflag.Parse()
 	if *version {
 		v := version2.Get()
