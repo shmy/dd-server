@@ -9,9 +9,29 @@ import (
 	"github.com/spf13/viper"
 	"net/http"
 	"time"
+	"github.com/spf13/pflag"
+	"encoding/json"
+	"fmt"
+	"os"
+	version2 "github.com/shmy/dd-server/pkg/version"
 )
 
+var (
+	version = pflag.BoolP("version", "v", false, "show version info.")
+)
 func main() {
+	pflag.Parse()
+	if *version {
+		v := version2.Get()
+		marshalled, err := json.MarshalIndent(&v, "", "  ")
+		if err != nil {
+			fmt.Printf("%v\n", err)
+			os.Exit(1)
+		}
+
+		fmt.Println(string(marshalled))
+		return
+	}
 	runmode := viper.GetString("runmode")
 	e := echo.New()
 	e.HideBanner = runmode == "release"
