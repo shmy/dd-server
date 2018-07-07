@@ -212,6 +212,9 @@ func Detail(c echo.Context) error {
 		return cc.Fail(errors.New("视频不存在"))
 	}
 	// 增加浏览次数
+	if ret["number"] == nil {
+		ret["number"] = 0
+	}
 	number := ret["number"].(int) + 1
 	ret["number"] = number
 	video.M.UpdateById(ret["_id"], bson.M{
