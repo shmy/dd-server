@@ -12,6 +12,7 @@ import (
 	"regexp"
 	"time"
 	"unicode/utf8"
+	"math"
 )
 
 // 注册
@@ -173,44 +174,33 @@ func SignOut(c echo.Context) error {
 	})
 }
 
-// admin
 
-//func Users (c echo.Context) error {
-//	cc := c.(*utils.ShmyContext)
-//	// 解析分页
-//	page, err := strconv.Atoi(c.QueryParam("page"))
-//	if err != nil || page < 1 {
-//		page = 1
-//	}
-//	perPage, err := strconv.Atoi(c.QueryParam("per_page"))
-//	if err != nil || page < 1 {
-//		perPage = 20
-//	}
-//	var conditions = &bson.M{}
-//	user.Find(conditions)
-//	// 获取总数
-//	var total int
-//	total, err = user.GetCollection().Find(conditions).Count()
-//	if err != nil {
-//		return cc.Fail(err.Error())
-//	}
-//	var v []*user.User = []*user.User{}
-//	// 获取结果集
-//	err = user.GetCollection().
-//		Find(conditions).
-//		Sort("-created_at").
-//		Skip((page - 1) * perPage).
-//		Limit(perPage).
-//		All(&v)
-//	if err != nil {
-//		return cc.Fail(err.Error())
-//	}
-//
-//	return cc.Success(map[string]interface{}{
-//		"result":    v,
-//		"total":     total,
-//		"page":      page,
-//		"per_page":  perPage,
-//		"last_page": math.Ceil(float64(total) / float64(perPage)),
-//	})
-//}
+func List (c echo.Context) error {
+	cc := util.ApiContext{ c }
+	// 解析分页
+	paging := util.ParsePaging(&cc)
+	// 获取总数
+	total, err := user.M.Count(nil)
+	if err != nil {
+		return cc.Fail(err)
+	}
+	// 获取结果集
+	v, err := user.M.Query(
+		nil,
+		"username, created_at",
+		"-created_at",
+		paging.Offset,
+		paging.Limit,
+	)
+	if err != nil {
+		return cc.Fail(err)
+	}
+
+	return cc.Success(&echo.Map{
+		"result":    v,
+		"total":     total,
+		"page":      paging.Page,
+		"per_page":  paging.Limit,
+		"last_page": math.Ceil(float64(total) / float64(paging.Limit)),
+	})
+}

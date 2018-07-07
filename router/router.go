@@ -63,4 +63,10 @@ func Load(e *echo.Echo) {
 		apiClient.GET("profile/sign_out", user.SignOut, jwt.JWT(secret)) // ok
 
 	}
+	// 服务端端
+	apiServer := e.Group("/api/server/")
+	{
+		// 用户列表
+		apiServer.GET("users", user.List)
+	}
 }

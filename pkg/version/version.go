@@ -7,7 +7,7 @@ import (
 
 // Info contains versioning information.
 type Info struct {
-	Version       string `json:"version"`
+	Version      string `json:"version"`
 	Author       string `json:"author"`
 	GitTag       string `json:"gitTag"`
 	GitCommit    string `json:"gitCommit"`
