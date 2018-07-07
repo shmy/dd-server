@@ -26,6 +26,10 @@ upx bin/darwin/dd-server
 upx bin/linux/dd-server
 upx bin/windows/dd-server.exe
 
+# 启动文件
+cp admin.sh bin/darwin/admin.sh
+cp admin.sh bin/linux/admin.sh
+
 # 配置文件
 cp config.prod.yml bin/darwin/config.yml
 cp config.prod.yml bin/linux/config.yml
