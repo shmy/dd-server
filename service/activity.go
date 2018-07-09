@@ -11,7 +11,10 @@ import (
 
 // 插入播放记录到动态表
 func AddToActivity(v bson.M, uid bson.ObjectId) error {
-	ret, err := activity.M.FindOne(bson.M{"vid": v["_id"]}, nil)
+	ret, err := activity.M.FindOne(bson.M{
+		"vid": v["_id"],
+		"uid": uid,
+	}, nil)
 	if err != nil {
 		return err
 	}

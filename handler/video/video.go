@@ -243,14 +243,19 @@ func Detail(c echo.Context) error {
 				log.Warn("ADD HOT:" + err.Error())
 			}
 		} else {
-			//err := hot.E.GetCollection().UpdateId(red.Id, &bson.M{
-			//	"$set": &bson.M{
-			//		"index": red.Index + 1,
-			//	},
-			//})
-			//if err != nil {
-			//	log.Warn("UPDATE HOT:" + err.Error())
-			//}
+			var index int
+			if red["index"] == nil {
+				index = 0
+			}
+			index = red["index"].(int)
+			_, err := hot.M.UpdateById(red["_id"], bson.M{
+				"$set": bson.M{
+					"index": index + 1,
+				},
+			})
+			if err != nil {
+				log.Warn("UPDATE HOT:" + err.Error())
+			}
 		}
 	}
 	return cc.Success(ret)
