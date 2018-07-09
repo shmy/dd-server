@@ -101,15 +101,15 @@ var (
 //
 // See: https://jwt.io/introduction
 // See `JWTConfig.TokenLookup`
-func JWT(key string) echo.MiddlewareFunc {
+func JWT(key string, optional bool) echo.MiddlewareFunc {
 	c := DefaultJWTConfig
 	c.SigningKey = []byte(key)
-	return JWTWithConfig(c)
+	return JWTWithConfig(c, optional)
 }
 
 // JWTWithConfig returns a JWT auth middleware with config.
 // See: `JWT()`.
-func JWTWithConfig(config JWTConfig) echo.MiddlewareFunc {
+func JWTWithConfig(config JWTConfig, optional bool) echo.MiddlewareFunc {
 	// Defaults
 	if config.Skipper == nil {
 		config.Skipper = DefaultJWTConfig.Skipper
@@ -157,7 +157,8 @@ func JWTWithConfig(config JWTConfig) echo.MiddlewareFunc {
 			}
 
 			auth, err := extractor(c)
-			if err != nil {
+			// 取不到token并且不是可选项
+			if err != nil && !optional {
 				return err
 			}
 			token := new(jwt.Token)
@@ -191,6 +192,10 @@ func JWTWithConfig(config JWTConfig) echo.MiddlewareFunc {
 						Internal: err,
 					}
 				}
+			}
+			// 如果是可选的验证
+			if optional {
+				return next(c)
 			}
 			// 其他错误
 			return &echo.HTTPError{

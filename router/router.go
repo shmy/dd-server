@@ -50,20 +50,20 @@ func Load(e *echo.Echo) {
 		// 大家都在看
 		apiClient.GET("video/activity", activity.List) // ok
 		// 个人播放记录
-		apiClient.GET("video/record", activity.Record, jwt.JWT(secret)) // ok
+		apiClient.GET("video/record", activity.Record, jwt.JWT(secret, false)) // ok
 		// 视频搜索
 		apiClient.GET("video/search", video.Search) // ok
 		// 视频详情
-		apiClient.GET("video/:id", video.Detail) // ok
+		apiClient.GET("video/:id", video.Detail, jwt.JWT(secret, true)) // ok
 		//apiClient.GET("video/:id", video.Detail, jwt.JWT(secret)) // ok
 		//// 用户注册
 		apiClient.POST("profile/sign_up", user.SignUp) // ok
 		// 用户登录
 		apiClient.POST("profile/sign_in", user.SignIn) // ok
 		// 个人详情
-		apiClient.GET("profile/detail", user.Detail, jwt.JWT(secret)) // ok
+		apiClient.GET("profile/detail", user.Detail, jwt.JWT(secret, false)) // ok
 		// 用户登出
-		apiClient.GET("profile/sign_out", user.SignOut, jwt.JWT(secret)) // ok
+		apiClient.GET("profile/sign_out", user.SignOut, jwt.JWT(secret, false)) // ok
 
 	}
 	// 服务端端
