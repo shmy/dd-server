@@ -221,10 +221,12 @@ func Detail(c echo.Context) error {
 		"number": ret["number"],
 	})
 	// 更新或者添加记录
-	uidString := cc.Get("user").(*jwt2.ClienJwtClaims).Id
-	//fmt.Println(cc.Get("user").(*jwt2.ClienJwtClaims).User)
-	uid := bson.ObjectIdHex(uidString)
-	service.AddToActivity(ret, uid)
+	user := cc.Get("user")
+	if user != nil {
+		userClaims := user.(*jwt2.ClienJwtClaims)
+		uid := bson.ObjectIdHex(userClaims.Id)
+		service.AddToActivity(ret, uid)
+	}
 	// 设置热搜
 	if from == "search" && ret != nil {
 		red, _ := hot.M.FindOne(bson.M{

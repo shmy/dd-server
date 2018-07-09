@@ -54,7 +54,8 @@ func Load(e *echo.Echo) {
 		// 视频搜索
 		apiClient.GET("video/search", video.Search) // ok
 		// 视频详情
-		apiClient.GET("video/:id", video.Detail, jwt.JWT(secret)) // ok
+		apiClient.GET("video/:id", video.Detail) // ok
+		//apiClient.GET("video/:id", video.Detail, jwt.JWT(secret)) // ok
 		//// 用户注册
 		apiClient.POST("profile/sign_up", user.SignUp) // ok
 		// 用户登录
