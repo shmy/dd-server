@@ -49,6 +49,8 @@ func Load(e *echo.Echo) {
 		apiClient.GET("video/hot", video.Hot) // ok
 		// 大家都在看
 		apiClient.GET("video/activity", activity.List) // ok
+		// 个人播放记录
+		apiClient.GET("video/record", activity.Record, jwt.JWT(secret)) // ok
 		// 视频搜索
 		apiClient.GET("video/search", video.Search) // ok
 		// 视频详情

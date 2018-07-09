@@ -43,7 +43,7 @@ func AddToActivity(v bson.M, uid bson.ObjectId) error {
 }
 
 // 查询关联
-func ListActivity(list []bson.M) []bson.M {
+func ListActivity(list []bson.M) {
 	wg := sync.WaitGroup{}
 	for _, v := range list {
 		wg.Add(1)
@@ -57,5 +57,5 @@ func ListActivity(list []bson.M) []bson.M {
 		}(v)
 	}
 	wg.Wait()
-	return list
+	//return list
 }
