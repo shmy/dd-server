@@ -9,6 +9,7 @@ import (
 	"github.com/shmy/dd-server/handler/user"
 	"github.com/shmy/dd-server/handler/video"
 	"github.com/spf13/viper"
+	"github.com/shmy/dd-server/handler/app"
 )
 
 func Load(e *echo.Echo) {
@@ -39,6 +40,8 @@ func Load(e *echo.Echo) {
 	apiClient := e.Group("/api/client/")
 	{
 		var secret = viper.GetString("jsonwebtoken.client.secret")
+		// app检查更新
+		apiClient.GET("check_for_update", app.Update) // ok
 		// 首页推荐
 		apiClient.GET("recommended", video.Recommended) // ok
 		// 视频分类大全
