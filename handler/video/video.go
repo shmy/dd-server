@@ -85,7 +85,7 @@ func List(c echo.Context) error {
 	}
 	paging := util.ParsePaging(cc) // 解析分页参数
 	v, err := video.M.Query(conditions,
-		"name, thumbnail, quality, _id",
+		"name, thumbnail, quality, _id, generated_at",
 		"-generated_at",
 		paging.Offset,
 		paging.Limit,
