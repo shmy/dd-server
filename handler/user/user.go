@@ -2,7 +2,6 @@ package user
 
 import (
 	"errors"
-	"github.com/globalsign/mgo"
 	"github.com/globalsign/mgo/bson"
 	"github.com/labstack/echo"
 	"github.com/shmy/dd-server/handler/middleware/jwt"
@@ -40,8 +39,8 @@ func SignUp(c echo.Context) error {
 		return cc.Fail(errors.New("两次密码输入不一致"))
 	}
 	// 判断用户是否存在
-	u, err := user.M.Find(bson.M{"username": username}, nil)
-	if err != nil && err != mgo.ErrNotFound {
+	u, err := user.M.FindOne(bson.M{"username": username}, nil)
+	if err != nil {
 		return cc.Fail(err)
 	}
 	if u != nil {
