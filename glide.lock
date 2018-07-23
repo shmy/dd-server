@@ -1,19 +1,12 @@
-hash: cf342a43505a681d1cdaef7b27cf5fa2c861ebe6670a04913c87e2d01ad53ae6
-updated: 2018-07-03T14:38:29.992782+08:00
+hash: 35e2bbda829bab839c817626488de10ec663474f3192b7aaa568f632fb354258
+updated: 2018-07-23T13:58:13.530696+08:00
 imports:
+- name: github.com/andybalholm/cascadia
+  version: 901648c87902174f774fac311d7f176f8647bdaa
 - name: github.com/dgrijalva/jwt-go
   version: 06ea1031745cb8b3dab3f6a236daf2b0aa468b7e
-  subpackages:
-  - request
 - name: github.com/fsnotify/fsnotify
   version: c2828203cd70a50dcccfb2761f8b1f8ceef9a8e9
-- name: github.com/gin-contrib/sse
-  version: 22d885f9ecc78bf4ee5d72b937e4bbcdc58e8cae
-- name: github.com/gin-gonic/gin
-  version: d459835d2b077e44f7c9b453505ee29881d5d12d
-  subpackages:
-  - binding
-  - render
 - name: github.com/globalsign/mgo
   version: 113d3961e7311526535a1ef7042196563d442761
   subpackages:
@@ -25,10 +18,6 @@ imports:
   version: 7a0fa49edf48165190530c675167e2f319a05268
   subpackages:
   - oleutil
-- name: github.com/golang/protobuf
-  version: 9eb2c01ac278a5d89ce4b2be68fe4500955d8179
-  subpackages:
-  - proto
 - name: github.com/hashicorp/hcl
   version: ef8a98b0bbce4a65b5aa4c368430a80ddc533168
   subpackages:
@@ -43,11 +32,15 @@ imports:
   - json/token
 - name: github.com/labstack/echo
   version: 6d227dfea4d2e52cb76856120b3c17f758139b4e
-- name: github.com/labstack/gommon
-  version: d6898124de917583f5ff5592ef931d1dfe0ddc05
   subpackages:
+  - middleware
+- name: github.com/labstack/gommon
+  version: 2a618302b929cc20862dda3aa6f02f64dbe740dd
+  subpackages:
+  - bytes
   - color
   - log
+  - random
 - name: github.com/lexkong/log
   version: 972f9cd951fc7e5c8797f1fb2b57b63b09ff4de9
   subpackages:
@@ -60,9 +53,11 @@ imports:
 - name: github.com/mattn/go-isatty
   version: 6ca4dbf54d38eea1a992b3c722a76a5d1c4cb25c
 - name: github.com/mitchellh/mapstructure
-  version: bb74f1db0675b241733089d5a1faa5dd8b0ef57b
+  version: f15292f7a699fcc1a38a80977f80a046874ba8ac
 - name: github.com/pelletier/go-toml
-  version: c01d1270ff3e442a8a57cddc1c92dc1138598194
+  version: 5c5490133daa8660ec676ca8b096cc27e223beaa
+- name: github.com/PuerkitoBio/goquery
+  version: dc2ec5c7ca4d9aae063b79b9f581dd3ea6afd2b2
 - name: github.com/shirou/gopsutil
   version: 4a180b209f5f494e5923cfce81ea30ba23915877
   subpackages:
@@ -85,37 +80,40 @@ imports:
   version: b5e8006cbee93ec955a89ab31e0e3ce3204f3736
 - name: github.com/StackExchange/wmi
   version: cdffdb33acae0e14efff2628f9bae377b597840e
-- name: github.com/ugorji/go
-  version: 7d51bbe6161dcb8f32a1252c27668ce36e3ef16b
-  subpackages:
-  - codec
 - name: github.com/valyala/bytebufferpool
   version: e746df99fe4a3986f4d4f79e13c1e0117ce9c2f7
 - name: github.com/valyala/fasttemplate
   version: dcecefd839c4193db0d35b88ec65b4c12d360ab0
 - name: golang.org/x/crypto
-  version: a49355c7e3f8fe157a85be2f77e6e269a0f89602
+  version: a2144134853fc9a27a7b1e3eb4f19f1a76df13c9
   repo: https://github.com/golang/crypto
   vcs: git
   subpackages:
   - acme
   - acme/autocert
+  - pbkdf2
+  - scrypt
+- name: golang.org/x/net
+  version: a680a1efc54dd51c040b3b5ce4939ea3cf2ea0d1
+  repo: https://github.com/golang/net
+  vcs: git
+  subpackages:
+  - html
+  - html/atom
 - name: golang.org/x/sys
-  version: 7138fd3d9dc8335c567ca206f4333fb75eb05d56
+  version: ac767d655b305d4e9612f5f6e33120b9176c4ad4
   repo: https://github.com/golang/sys
   vcs: git
   subpackages:
   - unix
   - windows
 - name: golang.org/x/text
-  version: c0fe8dde8a10c9b32154bd9bdf080b8b3d635127
+  version: 0605a8320aceb4207a5fb3521281e17ec2075476
   repo: https://github.com/golang/text
   vcs: git
   subpackages:
   - transform
   - unicode/norm
-- name: gopkg.in/go-playground/validator.v8
-  version: 5f1438d3fca68893a817e4a66806cea46a9e4ebf
 - name: gopkg.in/yaml.v2
   version: 5420a8b6744d3b0345ab293f6fcba19c978f1183
 testImports: []

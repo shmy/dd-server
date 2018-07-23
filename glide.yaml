@@ -16,6 +16,9 @@ import:
 - package: golang.org/x/crypto
   repo: https://github.com/golang/crypto
   vcs: git
+- package: golang.org/x/net
+  repo: https://github.com/golang/net
+  vcs: git
 - package: github.com/lexkong/log
 - package: github.com/spf13/viper
   version: ^1.0.2
@@ -24,3 +27,6 @@ import:
   version: ^3.2.0
 - package: github.com/labstack/echo
   version: ^3.3.5
+- package: github.com/PuerkitoBio/goquery
+  version: ^1.4.1
+- package: github.com/andybalholm/cascadia

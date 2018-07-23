@@ -10,6 +10,7 @@ import (
 	"github.com/shmy/dd-server/handler/video"
 	"github.com/spf13/viper"
 	"github.com/shmy/dd-server/handler/app"
+	"github.com/shmy/dd-server/handler/vip"
 )
 
 func Load(e *echo.Echo) {
@@ -67,6 +68,10 @@ func Load(e *echo.Echo) {
 		apiClient.GET("profile/detail", user.Detail, jwt.JWT(secret, false)) // ok
 		// 用户登出
 		apiClient.GET("profile/sign_out", user.SignOut, jwt.JWT(secret, false)) // ok
+
+
+		// 测试获取视频分集地址
+		apiClient.POST("vip/detail", vip.GetDetail) // ok
 
 	}
 	// 服务端端
