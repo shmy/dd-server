@@ -71,7 +71,7 @@ func Load(e *echo.Echo) {
 
 
 		// 测试获取视频分集地址
-		apiClient.POST("vip/detail", vip.GetDetail) // ok
+		apiClient.POST("vip/detail", vip.GetDetail, jwt.JWT(secret, false)) // ok
 
 	}
 	// 服务端端
