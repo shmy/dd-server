@@ -184,6 +184,9 @@ func JWTWithConfig(config JWTConfig, optional bool) echo.MiddlewareFunc {
 					// 塞入用户信息
 					token.Claims.(*ClienJwtClaims).User = ret
 					return next(c)
+					// 可选验证
+				} else if optional {
+					return next(c)
 				} else {
 					// 与用户侧不一致
 					return &echo.HTTPError{
