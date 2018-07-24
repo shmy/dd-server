@@ -11,6 +11,7 @@ import (
 	"github.com/spf13/viper"
 	"github.com/shmy/dd-server/handler/app"
 	"github.com/shmy/dd-server/handler/vip"
+	"github.com/shmy/dd-server/handler/favorite"
 )
 
 func Load(e *echo.Echo) {
@@ -72,6 +73,14 @@ func Load(e *echo.Echo) {
 
 		// 测试获取视频分集地址
 		apiClient.POST("vip/detail", vip.GetDetail, jwt.JWT(secret, false)) // ok
+
+		// 获取所有收藏夹
+		apiClient.GET("favorite", favorite.All, jwt.JWT(secret, false)) // ok
+
+		// 向收藏夹添加一个视频
+		apiClient.POST("favorite/add_video", favorite.AddToFavorite, jwt.JWT(secret, false)) // ok
+		// 新建一个收藏夹
+		apiClient.POST("favorite", favorite.Create, jwt.JWT(secret, false)) // ok
 
 	}
 	// 服务端端
