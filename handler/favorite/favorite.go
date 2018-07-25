@@ -37,7 +37,7 @@ func Create (c echo.Context) error {
 	data := bson.M{
 		"_id": bson.NewObjectId(),
 		"name": name,
-		"_uid": userClaims.Id,
+		"_uid": bson.ObjectIdHex(userClaims.Id),
 		"created_at": time.Now(),
 	}
 	_, err := favorite.M.Insert(data)
@@ -90,20 +90,20 @@ func AddToFavorite (c echo.Context) error {
 	}
 	data := bson.M{
 		//"_id": bson.NewObjectId(),
-		"_vid": _vid,
-		"_fid": _fid,
-		"_uid": _uid,
+		"_vid": bson.ObjectIdHex(_vid),
+		"_uid": bson.ObjectIdHex(_uid),
 		//"created_at": time.Now(),
 	}
-	// 判断该人该收藏夹是否已经收藏过该视频了
+	// 判断该人是否已经收藏过该视频了
 	count, err := collection.M.Count(data)
 	if err != nil {
 		return cc.Fail(err)
 	}
 	if count != 0 {
-		return cc.Fail(errors.New("该收藏夹已收藏过该视频了"))
+		return cc.Fail(errors.New("已收藏过该视频了"))
 	}
 	data["_id"] = bson.NewObjectId()
+	data["_fid"] = _fid
 	data["created_at"] = time.Now()
 	_, err = collection.M.Insert(data)
 	if err != nil {

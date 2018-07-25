@@ -6,7 +6,6 @@ import (
 	"github.com/globalsign/mgo/bson"
 	"github.com/labstack/echo"
 	"github.com/lexkong/log"
-	jwt2 "github.com/shmy/dd-server/handler/middleware/jwt"
 	"github.com/shmy/dd-server/model/classification"
 	"github.com/shmy/dd-server/model/hot"
 	"github.com/shmy/dd-server/model/video"
@@ -14,6 +13,7 @@ import (
 	"github.com/shmy/dd-server/util"
 	"math"
 	"time"
+	"github.com/shmy/dd-server/handler/middleware/jwt"
 )
 
 // 推荐列表
@@ -221,11 +221,21 @@ func Detail(c echo.Context) error {
 		"number": ret["number"],
 	})
 	// 更新或者添加记录
+	//user := cc.Get("user")
+	//if user != nil {
+	//	userClaims := user.(*jwt2.ClienJwtClaims)
+	//	uid := bson.ObjectIdHex(userClaims.Id)
+	//	service.AddToActivity(ret, uid)
+	//}
+	// 查询该人是否收藏
 	user := cc.Get("user")
 	if user != nil {
-		userClaims := user.(*jwt2.ClienJwtClaims)
+		userClaims := user.(*jwt.ClienJwtClaims)
 		uid := bson.ObjectIdHex(userClaims.Id)
-		service.AddToActivity(ret, uid)
+		ret["favorited"] = service.CheckIsFavorited(uid, ret["_id"])
+	} else {
+		// 没收藏
+		ret["favorited"] = false;
 	}
 	// 设置热搜
 	if from == "search" && ret != nil {
@@ -251,9 +261,7 @@ func Detail(c echo.Context) error {
 			}
 			index = red["index"].(int)
 			_, err := hot.M.UpdateById(red["_id"], bson.M{
-				"$set": bson.M{
-					"index": index + 1,
-				},
+				"index": index + 1,
 			})
 			if err != nil {
 				log.Warn("UPDATE HOT:" + err.Error())
