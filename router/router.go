@@ -12,6 +12,7 @@ import (
 	"github.com/shmy/dd-server/handler/app"
 	"github.com/shmy/dd-server/handler/vip"
 	"github.com/shmy/dd-server/handler/favorite"
+	"github.com/shmy/dd-server/handler/collection"
 )
 
 func Load(e *echo.Echo) {
@@ -76,13 +77,18 @@ func Load(e *echo.Echo) {
 
 		// 获取所有收藏夹
 		apiClient.GET("favorite", favorite.All, jwt.JWT(secret, false)) // ok
-
+		// 更新一个收藏夹
+		apiClient.PUT("favorite/:id", favorite.Update, jwt.JWT(secret, false)) // ok
 		// 向收藏夹添加一个视频
 		apiClient.POST("favorite/add_video", favorite.AddToFavorite, jwt.JWT(secret, false)) // ok
 		// 移除一个收藏的视频
 		apiClient.POST("favorite/remove_video", favorite.RemoveFromFavorite, jwt.JWT(secret, false)) // ok
 		// 新建一个收藏夹
 		apiClient.POST("favorite", favorite.Create, jwt.JWT(secret, false)) // ok
+		// 移除一个收藏夹
+		apiClient.DELETE("favorite/:id", favorite.Remove, jwt.JWT(secret, false)) // ok
+		// 根据收藏夹id获取分页列表
+		apiClient.GET("collection/:id", collection.List, jwt.JWT(secret, false)) // ok
 
 	}
 	// 服务端端

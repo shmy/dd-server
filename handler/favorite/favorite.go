@@ -50,9 +50,64 @@ func Create (c echo.Context) error {
 	}
 	return cc.Success(data)
 }
-
+// 更新一个收藏夹
+func Update (c echo.Context) error {
+	cc := util.ApiContext{ c }
+	user := cc.Get("user")
+	userClaims := user.(*jwt.ClienJwtClaims)
+	name := cc.DefaultFormValueString("name", "", true)
+	if name == "" {
+		return cc.Fail(errors.New("请输入收藏夹名称"))
+	}
+	id := bson.ObjectIdHex(cc.Param("id"))
+	// 判断收藏夹是不存在
+	r, err := favorite.M.FindById(id, "_uid")
+	if err != nil {
+		return cc.Fail(err)
+	}
+	if r == nil {
+		return cc.Fail(errors.New("收藏夹不存在"))
+	}
+	if r["_uid"] != bson.ObjectIdHex(userClaims.Id) {
+		return cc.Fail(errors.New("访问失败，这不是你的收藏夹"))
+	}
+	data := bson.M{
+		"name": name,
+		"_uid": bson.ObjectIdHex(userClaims.Id),
+	}
+	r, err = favorite.M.UpdateById(id, data)
+	if err != nil {
+		return cc.Fail(err)
+	}
+	return cc.Success(r)
+}
+// 删除一个收藏夹
+func Remove (c echo.Context) error {
+	cc := util.ApiContext{ c }
+	user := cc.Get("user")
+	userClaims := user.(*jwt.ClienJwtClaims)
+	id := bson.ObjectIdHex(cc.Param("id"))
+	// 判断收藏夹是不存在
+	r, err := favorite.M.FindById(id, "_uid")
+	if err != nil {
+		return cc.Fail(err)
+	}
+	if r == nil {
+		return cc.Fail(errors.New("收藏夹不存在"))
+	}
+	if r["_uid"] != bson.ObjectIdHex(userClaims.Id) {
+		return cc.Fail(errors.New("访问失败，这不是你的收藏夹"))
+	}
+	data := bson.M{
+		"_fid": id,
+	}
+	// 删除相关收藏
+	collection.M.RemoveAll(data)
+	// 删除收藏夹
+	favorite.M.RemoveById(id)
+	return cc.Success(r)
+}
 // 添加一个资源到收藏夹
-
 func AddToFavorite (c echo.Context) error {
 	cc := util.ApiContext{ c }
 	user := cc.Get("user")
@@ -117,7 +172,7 @@ func AddToFavorite (c echo.Context) error {
 	}
 	return cc.Success(data)
 }
-
+// 从收藏夹删除一个资源
 func RemoveFromFavorite (c echo.Context) error {
 	cc := util.ApiContext{ c }
 	user := cc.Get("user")
