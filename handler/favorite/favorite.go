@@ -103,7 +103,7 @@ func AddToFavorite (c echo.Context) error {
 		return cc.Fail(errors.New("已收藏过该视频了"))
 	}
 	data["_id"] = bson.NewObjectId()
-	data["_fid"] = _fid
+	data["_fid"] = bson.ObjectIdHex(_fid)
 	data["created_at"] = time.Now()
 	_, err = collection.M.Insert(data)
 	if err != nil {
