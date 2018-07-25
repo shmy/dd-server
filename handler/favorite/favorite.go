@@ -18,7 +18,7 @@ func All (c echo.Context) error {
 	user := cc.Get("user")
 	userClaims := user.(*jwt.ClienJwtClaims)
 	r, err := favorite.M.Find(bson.M{
-		"_uid": userClaims.Id,
+		"_uid": bson.ObjectIdHex(userClaims.Id),
 	}, nil)
 	if err != nil {
 		return cc.Fail(err)
