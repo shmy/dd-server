@@ -67,8 +67,10 @@ func AddToFavorite (c echo.Context) error {
 	if !bson.IsObjectIdHex(_fid) {
 		return cc.Fail(errors.New("收藏夹id格式不正确"))
 	}
+	vid := bson.ObjectIdHex(_vid)
+	fid := bson.ObjectIdHex(_fid)
 	// 判断视频是否存在
-	v, err := video.M.FindById(_vid, "_id")
+	v, err := video.M.FindById(vid, "_id")
 	if err != nil {
 		return cc.Fail(err)
 	}
@@ -76,7 +78,7 @@ func AddToFavorite (c echo.Context) error {
 		return cc.Fail(errors.New("视频不存在"))
 	}
 	// 判断收藏夹是否存在
-	f, err := favorite.M.FindById(_fid, "_uid")
+	f, err := favorite.M.FindById(fid, "_uid")
 	if err != nil {
 		return cc.Fail(err)
 	}
@@ -85,13 +87,14 @@ func AddToFavorite (c echo.Context) error {
 	}
 	// 判断是否是该用户的收藏夹
 	_uid := userClaims.Id
-	if f["_uid"] != _uid {
+	uid := bson.ObjectIdHex(_uid)
+	if f["_uid"] != uid {
 		return cc.Fail(errors.New("收藏夹不属于你"))
 	}
 	data := bson.M{
 		//"_id": bson.NewObjectId(),
-		"_vid": bson.ObjectIdHex(_vid),
-		"_uid": bson.ObjectIdHex(_uid),
+		"_vid": vid,
+		"_uid": uid,
 		//"created_at": time.Now(),
 	}
 	// 判断该人是否已经收藏过该视频了
@@ -103,7 +106,7 @@ func AddToFavorite (c echo.Context) error {
 		return cc.Fail(errors.New("已收藏过该视频了"))
 	}
 	data["_id"] = bson.NewObjectId()
-	data["_fid"] = bson.ObjectIdHex(_fid)
+	data["_fid"] = fid
 	data["created_at"] = time.Now()
 	_, err = collection.M.Insert(data)
 	if err != nil {
