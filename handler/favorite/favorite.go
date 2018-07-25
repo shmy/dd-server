@@ -17,9 +17,13 @@ func All (c echo.Context) error {
 	cc := util.ApiContext{ c }
 	user := cc.Get("user")
 	userClaims := user.(*jwt.ClienJwtClaims)
-	r, err := favorite.M.Find(bson.M{
+	r, err := favorite.M.Query(bson.M{
 		"_uid": bson.ObjectIdHex(userClaims.Id),
-	}, nil)
+	},
+	nil,
+	"-created_at",
+	0,
+	100) // TODO 默认倒叙一百条
 	if err != nil {
 		return cc.Fail(err)
 	}
