@@ -310,3 +310,42 @@ func (m *Model) BulkUpdate(conditions bson.M, doc []bson.M) ([]bson.M, error) {
 	}
 	return m.Find(conditions, nil)
 }
+
+// 按id删除一个数据
+func (m *Model) RemoveById(objectId bson.ObjectId) bool {
+	err := m.Collection.RemoveId(objectId)
+	if err != nil {
+		log.Error("DB RemoveOne:", err, lager.Data{
+			"collection": m.Collection.FullName,
+			"objectId": objectId,
+		})
+		return false
+	}
+	return true
+}
+
+// 按条件删除一个数据
+func (m *Model) RemoveOne(conditions bson.M) bool {
+	err := m.Collection.Remove(conditions)
+	if err != nil {
+		log.Error("DB RemoveOne:", err, lager.Data{
+			"collection": m.Collection.FullName,
+			"conditions": conditions,
+		})
+		return false
+	}
+	return true
+}
+
+// 按条件删除多个数据
+func (m *Model) RemoveAll(conditions bson.M) bool {
+	_, err := m.Collection.RemoveAll(conditions)
+	if err != nil {
+		log.Error("DB RemoveOne:", err, lager.Data{
+			"collection": m.Collection.FullName,
+			"conditions": conditions,
+		})
+		return false
+	}
+	return true
+}

@@ -79,6 +79,8 @@ func Load(e *echo.Echo) {
 
 		// 向收藏夹添加一个视频
 		apiClient.POST("favorite/add_video", favorite.AddToFavorite, jwt.JWT(secret, false)) // ok
+		// 移除一个收藏的视频
+		apiClient.POST("favorite/remove_video", favorite.RemoveFromFavorite, jwt.JWT(secret, false)) // ok
 		// 新建一个收藏夹
 		apiClient.POST("favorite", favorite.Create, jwt.JWT(secret, false)) // ok
 

@@ -53,6 +53,7 @@ func AddToFavorite (c echo.Context) error {
 	cc := util.ApiContext{ c }
 	user := cc.Get("user")
 	userClaims := user.(*jwt.ClienJwtClaims)
+	uid := bson.ObjectIdHex(userClaims.Id)
 	_vid := cc.DefaultFormValueString("vid", "", true)
 	_fid := cc.DefaultFormValueString("fid", "", true)
 	if _vid == "" {
@@ -86,8 +87,6 @@ func AddToFavorite (c echo.Context) error {
 		return cc.Fail(errors.New("收藏夹不存在"))
 	}
 	// 判断是否是该用户的收藏夹
-	_uid := userClaims.Id
-	uid := bson.ObjectIdHex(_uid)
 	if f["_uid"] != uid {
 		return cc.Fail(errors.New("收藏夹不属于你"))
 	}
@@ -113,4 +112,22 @@ func AddToFavorite (c echo.Context) error {
 		return cc.Fail(err)
 	}
 	return cc.Success(data)
+}
+
+func RemoveFromFavorite (c echo.Context) error {
+	cc := util.ApiContext{ c }
+	user := cc.Get("user")
+	userClaims := user.(*jwt.ClienJwtClaims)
+	_vid := cc.DefaultFormValueString("vid", "", true)
+	if _vid == "" {
+		return cc.Fail(errors.New("请输入视频id"))
+	}
+	if !bson.IsObjectIdHex(_vid) {
+		return cc.Fail(errors.New("视频id格式不正确"))
+	}
+	b := collection.M.RemoveAll(bson.M{
+		"_vid": bson.ObjectIdHex(_vid),
+		"_uid": bson.ObjectIdHex(userClaims.Id),
+	})
+	return cc.Success(b)
 }
