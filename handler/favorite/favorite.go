@@ -10,6 +10,7 @@ import (
 	"errors"
 	"github.com/shmy/dd-server/model/video"
 	"github.com/shmy/dd-server/model/collection"
+	"github.com/shmy/dd-server/service"
 )
 
 // 获取所有收藏夹
@@ -27,6 +28,7 @@ func All (c echo.Context) error {
 	if err != nil {
 		return cc.Fail(err)
 	}
+	service.ListCountCollection(r)
 	return cc.Success(r)
 }
 // 创建一个收藏夹

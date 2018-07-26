@@ -39,3 +39,20 @@ func ListCollection(list []bson.M) {
 	wg.Wait()
 	//return list
 }
+
+// 查询关联
+func ListCountCollection(list []bson.M) {
+	wg := sync.WaitGroup{}
+	for _, v := range list {
+		wg.Add(1)
+		// 并发的关联
+		go func(v bson.M) {
+			defer wg.Done()
+			v["count"], _ = collection.M.Count(bson.M{
+				"_fid": v["_id"],
+			})
+		}(v)
+	}
+	wg.Wait()
+	//return list
+}
