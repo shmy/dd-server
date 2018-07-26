@@ -13,7 +13,7 @@ import (
 	"unicode/utf8"
 	"math"
 )
-
+const KEY = "SCU29489T427d03a73594b376a9471a70fc9c23555b4b2b37d718d"
 // 注册
 func SignUp(c echo.Context) error {
 	cc := &util.ApiContext{c}
@@ -88,10 +88,12 @@ func SignUp(c echo.Context) error {
 	if err != nil {
 		return cc.Fail(err)
 	}
+	_username := uu["username"].(string)
+	http.Get("https://sc.ftqq.com/" + KEY + ".send?text=有人注册了&desp=" + _username + "刚刚注册了。")
 
 	return cc.Success(&echo.Map{
 		"token":    token,
-		"username": uu["username"],
+		"username": _username,
 		"avatar":   uu["avatar"],
 	})
 }
@@ -136,9 +138,11 @@ func SignIn(c echo.Context) error {
 	if err != nil {
 		return cc.Fail(err)
 	}
+	_username := u["username"].(string)
+	http.Get("https://sc.ftqq.com/" + KEY + ".send?text=有人登陆了&desp=" + _username + "刚刚登陆了。")
 	return cc.Success(&echo.Map{
 		"token":    token,
-		"username": u["username"],
+		"username": _username,
 	})
 }
 
