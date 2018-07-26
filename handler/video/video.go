@@ -116,6 +116,7 @@ func Hot(c echo.Context) error {
 	if err != nil {
 		return cc.Fail(err)
 	}
+	service.GetHotsThumbnail(u)
 	return cc.Success(u)
 }
 
