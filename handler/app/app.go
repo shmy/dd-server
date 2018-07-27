@@ -11,12 +11,26 @@ import (
 type Info struct {
 	Version string `json:"version"`
 	ApkUrl string `json:"url"`
+	Website string `json:"website"`
 	Date string `json:"date"`
 	Content []string `json:"content"`
 }
 func Update (c echo.Context) error {
 	cc := util.ApiContext{ c }
-	return cc.Redirect(301, "/static/app.json")
+	f, err := os.Open("./public/app.json")
+	if err != nil {
+		return cc.Fail(err)
+	}
+	jsonByte, err := ioutil.ReadAll(f)
+	if err != nil {
+		return cc.Fail(err)
+	}
+	var info Info
+	err = json.Unmarshal(jsonByte, &info)
+	if err != nil {
+		return cc.Fail(err)
+	}
+	return cc.Success(info)
 }
 
 func Download (c echo.Context) error {
