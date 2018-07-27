@@ -6,6 +6,7 @@ import (
 	"github.com/labstack/echo/middleware"
 	"github.com/lexkong/log"
 	"github.com/shmy/dd-server/router"
+	"html/template"
 	"github.com/spf13/viper"
 	"net/http"
 	"time"
@@ -14,6 +15,7 @@ import (
 	"fmt"
 	"os"
 	version2 "github.com/shmy/dd-server/pkg/version"
+	"github.com/shmy/dd-server/util"
 )
 
 var (
@@ -56,6 +58,11 @@ func main() {
 	if runmode == "release" {
 		e.Use(middleware.Recover())
 	}
+	// 模板引擎
+	t := &util.Template{
+		Templates: template.Must(template.ParseGlob("views/*.html")),
+	}
+	e.Renderer = t
 	e.Use(middleware.CORS())
 
 	router.Load(e)

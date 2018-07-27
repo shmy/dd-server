@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>黑人视频APP下载</title>
+    <style>
+        html, body, #app {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        #app {
+            background-color: #F0FAFC;
+            background-image: url("/static/download/header.jpg");
+            background-repeat: repeat-x;
+            background-position: 0 0;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+        }
+        a:link, a:visited, a:hover, a:active{
+            text-decoration:none;
+            color: #fff;
+        }
+        .download-button {
+            height: 45px;
+            line-height: 45px;
+            background-color: #00aaff;
+            color: #fff;
+            display: block;
+            width: 200px;
+            text-align: center;
+            margin-top: 20px;
+            border-radius: 5px;
+            -webkit-box-shadow: 0 10px 40px 0 rgba(62,57,107,0.07), 0 2px 9px 0 rgba(62,57,107,0.06);
+            box-shadow: 0 10px 40px 0 rgba(62,57,107,0.07), 0 2px 9px 0 rgba(62,57,107,0.06);
+        }
+        .download-button.disabled {
+            background-color: #d9d9d9;
+            color: #1c1c1c;
+        }
+        .is-weixin {
+            height: 100vh;
+            width: 100vw;
+            background-image: url("/static/download/live_weixin.png");
+            background-repeat: no-repeat;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-size: contain;
+            background-color: rgba(0, 0, 0, .7);
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <a id="android" class="download-button" download="黑人视频.apk">Android下载(v0.0.7)</a>
+        <a id="ios" class="download-button disabled">IOS下载(敬请期待)</a>
+    </div>
+    <div class="is-weixin"></div>
+    <script>
+        ;(function () {
+            // var ipaLink = "https://itunes.apple.com/us/app/998dian-wan-cheng/id1135278767?mt=8";
+            var apkLink = "http://111.39.142.240:55555/static/app/阳光生活_六安_latest.apk";
+            // document.querySelector('#ios').setAttribute('href', ipaLink);
+            document.querySelector('#android').setAttribute('href', apkLink);
+
+            function isWeiXin() {
+                var ua = window.navigator.userAgent.toLowerCase();
+                if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            function checkIsAppleDevice() {
+                var u = navigator.userAgent, app = navigator.appVersion;
+                var ios = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+                var iPad = u.indexOf('iPad') > -1;
+                var iPhone = u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1;
+                if (ios || iPad || iPhone) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            function checkIsAndroidDevice(){
+                var u = navigator.userAgent;
+                if (u.indexOf('Android') > -1 || u.indexOf('Adr') > -1) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            if (isWeiXin()) {
+                return document.querySelector('.is-weixin').style.display = 'block';
+            }
+            // if (checkIsAppleDevice()) {
+            //     window.location.href = ipaLink; // 跳转到AppStore
+            // } else if (checkIsAndroidDevice()) {
+            //     window.location.href = apkLink; // 打开apk
+            // }
+            if (checkIsAndroidDevice()) {
+                window.location.href = apkLink; // 打开apk
+            }
+        })();
+    </script>
+</body>
+</html>

@@ -13,6 +13,7 @@ import (
 	"github.com/shmy/dd-server/handler/vip"
 	"github.com/shmy/dd-server/handler/favorite"
 	"github.com/shmy/dd-server/handler/collection"
+	"net/http"
 )
 
 func Load(e *echo.Echo) {
@@ -30,7 +31,9 @@ func Load(e *echo.Echo) {
 	})
 	// 静态服务
 	e.Static("/static", "public")
-
+	e.GET("/download", func(c echo.Context) error {
+		return c.Render(http.StatusOK, "download.html", "World")
+	})
 	// The health check handlers
 	svcd := e.Group("/sd")
 	{
