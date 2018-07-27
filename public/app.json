@@ -1,3 +1,12 @@
 {
-  "version": "0.0.2"
+  "version": "0.0.6",
+  "url": "https://dd.shmy.tech/static/app-latest.apk",
+  "website": "https://dd.shmy.tech/download",
+  "date": "2018-07-25",
+  "content": [
+    "新增电视直播",
+    "新增登录功能",
+    "新增我的收藏",
+    "新增换肤功能"
+  ]
 }

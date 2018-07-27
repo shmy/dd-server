@@ -3,26 +3,36 @@ package app
 import (
 	"github.com/labstack/echo"
 	"github.com/shmy/dd-server/util"
-	"io/ioutil"
 	"os"
+	"io/ioutil"
+	"net/http"
 	"encoding/json"
 )
-
+type Info struct {
+	Version string `json:"version"`
+	ApkUrl string `json:"url"`
+	Date string `json:"date"`
+	Content []string `json:"content"`
+}
 func Update (c echo.Context) error {
 	cc := util.ApiContext{ c }
-	//cc.Set("Content-Type", "application/json; charset=UTF-8")
+	return cc.Redirect(301, "/static/app.json")
+}
+
+func Download (c echo.Context) error {
+
 	f, err := os.Open("./public/app.json")
 	if err != nil {
-		return cc.Fail(err)
+		return c.String(http.StatusInternalServerError, "StatusInternalServerError")
 	}
 	jsonByte, err := ioutil.ReadAll(f)
 	if err != nil {
-		return cc.Fail(err)
+		return c.String(http.StatusInternalServerError, "StatusInternalServerError")
 	}
-	var j interface{}
-	err = json.Unmarshal(jsonByte, &j)
+	var info Info
+	err = json.Unmarshal(jsonByte, &info)
 	if err != nil {
-		return cc.Fail(err)
+		return c.String(http.StatusInternalServerError, "StatusInternalServerError")
 	}
-	return cc.Success(j)
+	return c.Render(http.StatusOK, "download.html", info)
 }
