@@ -186,7 +186,7 @@ func Search(c echo.Context) error {
 	}
 	v, err := video.M.Query(
 		conditions,
-		"name, thumbnail, latest, _id",
+		"name, thumbnail, latest, generated_at, _id",
 		sort,
 		paging.Offset,
 		paging.Limit,
