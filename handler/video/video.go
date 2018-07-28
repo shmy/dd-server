@@ -85,7 +85,7 @@ func List(c echo.Context) error {
 	}
 	paging := util.ParsePaging(cc) // 解析分页参数
 	v, err := video.M.Query(conditions,
-		"name, thumbnail, quality, _id, generated_at",
+		"name, thumbnail, latest, _id, generated_at",
 		"-generated_at",
 		paging.Offset,
 		paging.Limit,
@@ -93,6 +93,9 @@ func List(c echo.Context) error {
 	if err != nil {
 		return cc.Fail(err)
 	}
+	//for _, el := range v { // 兼容旧版本
+	//	el["quality"] = el["latest"]
+	//}
 	return cc.Success(&echo.Map{
 		"title":     classify["name"],
 		"result":    v,
@@ -183,7 +186,7 @@ func Search(c echo.Context) error {
 	}
 	v, err := video.M.Query(
 		conditions,
-		"name, thumbnail, quality, _id",
+		"name, thumbnail, latest, _id",
 		sort,
 		paging.Offset,
 		paging.Limit,
@@ -191,6 +194,9 @@ func Search(c echo.Context) error {
 	if err != nil {
 		return cc.Fail(err)
 	}
+	//for _, el := range v { // 兼容旧版本
+	//	el["quality"] = el["latest"]
+	//}
 	return cc.Success(&echo.Map{
 		"result":    v,
 		"total":     total,
@@ -244,7 +250,7 @@ func Detail(c echo.Context) error {
 		ret["favorited"] = service.CheckIsFavorited(uid, ret["_id"])
 	} else {
 		// 没收藏
-		ret["favorited"] = false;
+		ret["favorited"] = false
 	}
 	// 设置热搜
 	if from == "search" && ret != nil {
