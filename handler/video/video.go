@@ -32,7 +32,7 @@ func Recommended(c echo.Context) error {
 		}
 		// 获取结果集
 		v, err := video.M.Query(conditions,
-			"_id, name, thumbnail, generated_at",
+			"_id, name, thumbnail, latest, generated_at",
 			"-generated_at",
 			0,
 			16,
