@@ -106,12 +106,20 @@ func List(c echo.Context) error {
 // 热门搜索
 func Hot(c echo.Context) error {
 	cc := &util.ApiContext{c}
+	now := time.Now()
+	dur, _ := time.ParseDuration("-360h") // 查询15天热门
+	old := now.Add(dur)
 	u, err := hot.M.Query(
-		nil,
+		bson.M{
+			"updated_at": bson.M{
+				"$gte": old,
+				"$lte": now,
+			},
+		},
 		nil,
 		"-index",
 		0,
-		10,
+		12,
 	)
 	if err != nil {
 		return cc.Fail(err)
@@ -250,6 +258,7 @@ func Detail(c echo.Context) error {
 				"index":      1,
 				"vid":        ret["_id"],
 				"created_at": time.Now(),
+				"updated_at": time.Now(),
 			}
 			_, err := hot.M.Insert(u)
 			if err != nil {
@@ -263,6 +272,7 @@ func Detail(c echo.Context) error {
 			index = red["index"].(int)
 			_, err := hot.M.UpdateById(red["_id"], bson.M{
 				"index": index + 1,
+				"updated_at": time.Now(),
 			})
 			if err != nil {
 				log.Warn("UPDATE HOT:" + err.Error())
