@@ -19,9 +19,9 @@ func Index (c echo.Context) error {
 	var result = make(bson.M)
 	result["banner"] = []bson.M{
 		{
-			"name": "支付宝又发红包了，天天可领，点击立即去领",
+			"name": "支付宝又双叒叕发红包了，天天可领，戳我去领",
 			"image":
-			"http://n.sinaimg.cn/finance/transform/20170330/z8Fu-fycwyns3693714.jpg",
+			"https://dd.shmy.tech/static/ads/alipay/alipay_redpack.png",
 			"action": bson.M {
 				"type": "alipay_readpack",
 				"data": "Nl7FJ976sg",
@@ -63,17 +63,17 @@ func Index (c echo.Context) error {
 			"https://img.zcool.cn/community/0145735928d586a801216a3e141620.png@1280w_1l_2o_100sh.webp",
 			"height": 0.4,
 			"action": bson.M{
-				"type": "webview",
-				"data": "https://www.jd.com",
+				"type": "alert",
+				"data": "该广告位招租，联系QQ: 2635970493",
 			},
 		},
 		{
 			"image":
-			"https://img.zcool.cn/community/0145735928d586a801216a3e141620.png@1280w_1l_2o_100sh.webp",
-			"height": 0.4,
+			"https://dd.shmy.tech/static/ads/jd/jd.webp",
+			"height": 0.24,
 			"action": bson.M{
-				"type": "alert",
-				"data": "该广告位招租，联系QQ: 2635970493",
+				"type": "webview",
+				"data": "https://www.jd.com",
 			},
 		},
 	}
