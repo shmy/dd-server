@@ -285,5 +285,17 @@ func Detail(c echo.Context) error {
 			}
 		}
 	}
+	// TODO 自动读取广告
+	ret["ads"] = []bson.M {
+		{
+			"image":
+			"https://img.zcool.cn/community/0145735928d586a801216a3e141620.png@1280w_1l_2o_100sh.webp",
+			"height": 0.4,
+			"action": bson.M{
+				"type": "alert",
+				"data": "该广告位招租，联系QQ: 2635970493",
+			},
+		},
+	}
 	return cc.Success(ret)
 }

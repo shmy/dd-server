@@ -7,6 +7,7 @@ import (
 	"github.com/shmy/dd-server/handler/middleware/jwt"
 	"github.com/shmy/dd-server/handler/sd"
 	"github.com/shmy/dd-server/handler/user"
+	user2 "github.com/shmy/dd-server/handler/v2/video"
 	"github.com/shmy/dd-server/handler/video"
 	"github.com/spf13/viper"
 	"github.com/shmy/dd-server/handler/app"
@@ -72,7 +73,7 @@ func Load(e *echo.Echo) {
 		apiClient.GET("profile/sign_out", user.SignOut, jwt.JWT(secret, false)) // ok
 
 
-		// 测试获取视频分集地址
+		// 测试获取vip视频分集地址
 		apiClient.POST("vip/detail", vip.GetDetail, jwt.JWT(secret, false)) // ok
 
 		// 获取所有收藏夹
@@ -89,6 +90,9 @@ func Load(e *echo.Echo) {
 		apiClient.DELETE("favorite/:id", favorite.Remove, jwt.JWT(secret, false)) // ok
 		// 根据收藏夹id获取分页列表
 		apiClient.GET("collection/:id", collection.List, jwt.JWT(secret, false)) // ok
+
+		// v2版本首页数据
+		apiClient.GET("v2/video/index", user2.Index) // ok
 
 	}
 	// 服务端端

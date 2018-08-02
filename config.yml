@@ -1,7 +1,7 @@
 runmode: debug                 # 开发模式: debug, release
 
 server:
-  host: 127.0.0.1         # 监听的ip地址
+  host: 172.27.35.17         # 监听的ip地址
   port: 1994              # 监听的端口
 
 mongodb:
