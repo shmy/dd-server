@@ -190,7 +190,7 @@ func RemoveFromFavorite (c echo.Context) error {
 		return cc.Fail(errors.New("视频id格式不正确"))
 	}
 	vid := bson.ObjectIdHex(_vid)
-	b := collection.M.RemoveAll(bson.M{
+ 	collection.M.RemoveAll(bson.M{
 		"_vid": vid,
 		"_uid": bson.ObjectIdHex(userClaims.Id),
 	})
