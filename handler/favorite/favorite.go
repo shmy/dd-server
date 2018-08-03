@@ -172,7 +172,10 @@ func AddToFavorite (c echo.Context) error {
 	if err != nil {
 		return cc.Fail(err)
 	}
-	return cc.Success(data)
+	return cc.Success(bson.M{
+		"favorited": true,
+		"favorited_count": service.CountVideoFavorited(vid),
+	})
 }
 // 从收藏夹删除一个资源
 func RemoveFromFavorite (c echo.Context) error {
@@ -186,9 +189,13 @@ func RemoveFromFavorite (c echo.Context) error {
 	if !bson.IsObjectIdHex(_vid) {
 		return cc.Fail(errors.New("视频id格式不正确"))
 	}
+	vid := bson.ObjectIdHex(_vid)
 	b := collection.M.RemoveAll(bson.M{
-		"_vid": bson.ObjectIdHex(_vid),
+		"_vid": vid,
 		"_uid": bson.ObjectIdHex(userClaims.Id),
 	})
-	return cc.Success(b)
+	return cc.Success(bson.M{
+		"favorited": false,
+		"favorited_count": service.CountVideoFavorited(vid),
+	})
 }

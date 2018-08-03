@@ -56,3 +56,14 @@ func ListCountCollection(list []bson.M) {
 	wg.Wait()
 	//return list
 }
+
+// 根据视频ID查询多少人收藏了
+func CountVideoFavorited(id bson.ObjectId) int  {
+	count, err := collection.M.Count(bson.M{
+		"_vid": id,
+	})
+	if err != nil {
+		return 0
+	}
+	return count
+}

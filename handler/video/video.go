@@ -252,6 +252,8 @@ func Detail(c echo.Context) error {
 		// 没收藏
 		ret["favorited"] = false
 	}
+	// 给出收藏次数
+	ret["favorited_count"] = service.CountVideoFavorited(objectId)
 	// 设置热搜
 	if from == "search" && ret != nil {
 		red, _ := hot.M.FindOne(bson.M{
@@ -284,6 +286,11 @@ func Detail(c echo.Context) error {
 				log.Warn("UPDATE HOT:" + err.Error())
 			}
 		}
+	}
+	// 获取分类
+	ret["classify"], err = classification.M.FindById(ret["pid"], "name")
+	if err != nil {
+		return cc.Fail(err)
 	}
 	// TODO 自动读取广告
 	ret["ads"] = []bson.M {
