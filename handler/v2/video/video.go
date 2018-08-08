@@ -37,7 +37,7 @@ func Index (c echo.Context) error {
 	var err error
 	// 获取最新资源结果集
 	result["latests"], err = video.M.Query(conditions,
-		"_id, name, thumbnail, latest, generated_at",
+		"_id, name, thumbnail, latest, generated_at, source",
 		"-generated_at",
 		0,
 		8,

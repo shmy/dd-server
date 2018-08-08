@@ -85,7 +85,7 @@ func List(c echo.Context) error {
 	}
 	paging := util.ParsePaging(cc) // 解析分页参数
 	v, err := video.M.Query(conditions,
-		"name, thumbnail, latest, _id, generated_at",
+		"name, thumbnail, latest, _id, generated_at, source",
 		"-generated_at",
 		paging.Offset,
 		paging.Limit,
@@ -186,7 +186,7 @@ func Search(c echo.Context) error {
 	}
 	v, err := video.M.Query(
 		conditions,
-		"name, thumbnail, latest, generated_at, _id",
+		"name, thumbnail, latest, generated_at, _id, source",
 		sort,
 		paging.Offset,
 		paging.Limit,
