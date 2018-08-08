@@ -296,11 +296,11 @@ func Detail(c echo.Context) error {
 	ret["ads"] = []bson.M {
 		{
 			"image":
-			"https://img.zcool.cn/community/0145735928d586a801216a3e141620.png@1280w_1l_2o_100sh.webp",
-			"height": 0.4,
+			"https://dd.shmy.tech/static/ads/eye/eye.webp",
+			"height": 0.666,
 			"action": bson.M{
-				"type": "alert",
-				"data": "该广告位招租，联系QQ: 2635970493",
+				"type": "webview",
+				"data": "https://dd.shmy.tech/static/ads/eye",
 			},
 		},
 	}
