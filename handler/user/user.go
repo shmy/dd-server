@@ -89,7 +89,8 @@ func SignUp(c echo.Context) error {
 		return cc.Fail(err)
 	}
 	_username := uu["username"].(string)
-	http.Get("https://sc.ftqq.com/" + KEY + ".send?text=有人注册了&desp=" + _username + "刚刚注册了。")
+	t := time.Now().Format("2006-01-02 15:04:05")
+	http.Get("https://sc.ftqq.com/" + KEY + ".send?text=有人注册了&desp=" + _username + "刚刚注册了。" + t)
 
 	return cc.Success(&echo.Map{
 		"token":    token,
@@ -139,7 +140,8 @@ func SignIn(c echo.Context) error {
 		return cc.Fail(err)
 	}
 	_username := u["username"].(string)
-	http.Get("https://sc.ftqq.com/" + KEY + ".send?text=有人登陆了&desp=" + _username + "刚刚登陆了。")
+	t := time.Now().Format("2006-01-02 15:04:05")
+	http.Get("https://sc.ftqq.com/" + KEY + ".send?text=有人登陆了&desp=" + _username + "刚刚登陆了。" + t)
 	return cc.Success(&echo.Map{
 		"token":    token,
 		"username": _username,
