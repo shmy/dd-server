@@ -7,7 +7,7 @@ import (
 	"github.com/shmy/dd-server/handler/middleware/jwt"
 	"github.com/shmy/dd-server/handler/sd"
 	"github.com/shmy/dd-server/handler/user"
-	user2 "github.com/shmy/dd-server/handler/v2/video"
+	v2 "github.com/shmy/dd-server/handler/v2/video"
 	"github.com/shmy/dd-server/handler/video"
 	"github.com/spf13/viper"
 	"github.com/shmy/dd-server/handler/app"
@@ -92,7 +92,9 @@ func Load(e *echo.Echo) {
 		apiClient.GET("collection/:id", collection.List, jwt.JWT(secret, false)) // ok
 
 		// v2版本首页数据
-		apiClient.GET("v2/video/index", user2.Index) // ok
+		apiClient.GET("v2/video/index", v2.Index) // ok
+		// v2版本秘密花园搜索
+		apiClient.GET("v2/video/search_secret", v2.SearchSecret, jwt.JWT(secret, false)) // ok
 
 	}
 	// 服务端端
