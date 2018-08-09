@@ -33,7 +33,7 @@ func ListCollection(list []bson.M) {
 		go func(v bson.M) {
 			defer wg.Done()
 			v["video"], _ = video.M.FindById(v["_vid"],
-				"name, latest, generated_at, thumbnail")
+				"name, latest, generated_at, thumbnail, source")
 		}(v)
 	}
 	wg.Wait()
