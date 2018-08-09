@@ -177,6 +177,8 @@ func Search(c echo.Context) error {
 		if len(ids) > 1 {
 			conditions["pid"] = &bson.M{"$in": ids}
 		}
+	} else {
+		conditions["pid"] = &bson.M{"$nin": service.RuleOut} // 默认排除不显示的
 	}
 
 	// 获取总数
