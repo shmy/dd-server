@@ -36,7 +36,7 @@ func SearchSecret (c echo.Context) error {
 		"keyword": &bson.RegEx{keyword, "ig"},
 	}
 	// 有分类
-	if pid != "none" && pid != "" {
+	if pid != "" {
 		// 判断id
 		if !bson.IsObjectIdHex(pid) {
 			return cc.Fail(errors.New("ID格式不正确"))
