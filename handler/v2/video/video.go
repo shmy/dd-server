@@ -18,6 +18,7 @@ func SearchSecret (c echo.Context) error {
 	query := cc.DefaultQueryString("query", "2", 1)
 	sort := cc.DefaultQueryString("sort", "1", 1)
 	pid := cc.DefaultQueryString("pid", "", 1)
+	source := cc.DefaultQueryString("source", "", 1)
 	if keyword == "" {
 		return cc.Fail(errors.New("请输入搜索关键字"))
 	}
@@ -53,7 +54,9 @@ func SearchSecret (c echo.Context) error {
 	} else {
 		conditions["pid"] = &bson.M{"$in": service.RuleOut} // 默认排除不显示的
 	}
-
+	if source != "" { // 来源搜索
+		conditions["source"] = source
+	}
 	// 获取总数
 	total, err := video.M.Count(conditions)
 	if err != nil {
