@@ -14,6 +14,7 @@ import (
 	"github.com/shmy/dd-server/handler/vip"
 	"github.com/shmy/dd-server/handler/favorite"
 	"github.com/shmy/dd-server/handler/collection"
+	"github.com/shmy/dd-server/handler/series"
 )
 
 func Load(e *echo.Echo) {
@@ -90,6 +91,9 @@ func Load(e *echo.Echo) {
 		apiClient.DELETE("favorite/:id", favorite.Remove, jwt.JWT(secret, false)) // ok
 		// 根据收藏夹id获取分页列表
 		apiClient.GET("collection/:id", collection.List, jwt.JWT(secret, false)) // ok
+
+		// 根据id获取播单详情
+		apiClient.GET("series/:id", series.SeriesDetail) // ok
 
 		// v2版本首页数据
 		apiClient.GET("v2/video/index", v2.Index) // ok

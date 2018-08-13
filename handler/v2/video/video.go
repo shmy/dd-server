@@ -101,6 +101,18 @@ func Index (c echo.Context) error {
 				"data": "Nl7FJ976sg",
 			},
 		},
+		{
+			"name": "漫威宇宙十年电影合集",
+			"image":
+			"https://dd.shmy.tech/static/web_client/static/img/1.df0423e.jpg",
+			"action": bson.M {
+				"type": "series",
+				"data": bson.M{
+					"_id": "5b716e8fb8dacd1f59f942bb",
+					"name": "漫威宇宙十年电影合集",
+				},
+			},
+		},
 	}
 	// 获取最新资源
 	ids, _ := service.FindClassifyIds(id)
