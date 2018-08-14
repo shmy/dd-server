@@ -11,7 +11,6 @@ import (
 	"github.com/shmy/dd-server/handler/video"
 	"github.com/spf13/viper"
 	"github.com/shmy/dd-server/handler/app"
-	"github.com/shmy/dd-server/handler/vip"
 	"github.com/shmy/dd-server/handler/favorite"
 	"github.com/shmy/dd-server/handler/collection"
 	"github.com/shmy/dd-server/handler/series"
@@ -73,10 +72,6 @@ func Load(e *echo.Echo) {
 		// 用户登出
 		apiClient.GET("profile/sign_out", user.SignOut, jwt.JWT(secret, false)) // ok
 
-
-		// 测试获取vip视频分集地址
-		apiClient.POST("vip/detail", vip.GetDetail, jwt.JWT(secret, false)) // ok
-
 		// 获取所有收藏夹
 		apiClient.GET("favorite", favorite.All, jwt.JWT(secret, false)) // ok
 		// 更新一个收藏夹
@@ -99,6 +94,13 @@ func Load(e *echo.Echo) {
 		apiClient.GET("v2/video/index", v2.Index) // ok
 		// v2版本秘密花园搜索
 		apiClient.GET("v2/video/search_secret", v2.SearchSecret, jwt.JWT(secret, false)) // ok
+
+
+		//// 测试获取vip分类
+		//apiClient.GET("vip/list", vip.GetList) // ok
+		//apiClient.GET("vip/classify", vip.GetClassifyList) // ok
+		//// 测试获取vip视频分集地址
+		//apiClient.POST("vip/detail", vip.GetPlayUrls) // ok
 
 	}
 	// 服务端端

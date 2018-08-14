@@ -3,18 +3,19 @@ package util
 import (
 	"net/http"
 	"io"
+	"net/url"
 )
 
 var client *http.Client
 
 func init()  {
 	// 代理
-	//proxy := func(*http.Request) (*url.URL, error) {
-	//	return url.Parse("http://127.0.0.1:1087")
-	//}
-	//transport := &http.Transport{Proxy: proxy}
+	proxy := func(*http.Request) (*url.URL, error) {
+		return url.Parse("http://127.0.0.1:1087")
+	}
+	transport := &http.Transport{Proxy: proxy}
 	client = &http.Client{
-		//Transport: transport,
+		Transport: transport,
 	}
 }
 // get 方法 ua
