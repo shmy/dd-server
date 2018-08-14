@@ -33,19 +33,19 @@ func Update (c echo.Context) error {
 }
 
 func Download (c echo.Context) error {
-	return c.Redirect(302, "https://www.pgyer.com/F3AF")
-	//f, err := os.Open("./public/app.json")
-	//if err != nil {
-	//	return c.String(http.StatusInternalServerError, "StatusInternalServerError")
-	//}
-	//jsonByte, err := ioutil.ReadAll(f)
-	//if err != nil {
-	//	return c.String(http.StatusInternalServerError, "StatusInternalServerError")
-	//}
-	//var info Info
-	//err = json.Unmarshal(jsonByte, &info)
-	//if err != nil {
-	//	return c.String(http.StatusInternalServerError, "StatusInternalServerError")
-	//}
-	//return c.Render(http.StatusOK, "download.html", info)
+	//return c.Redirect(302, "https://www.pgyer.com/F3AF")
+	f, err := os.Open("./public/app.json")
+	if err != nil {
+		return c.String(http.StatusInternalServerError, "StatusInternalServerError")
+	}
+	jsonByte, err := ioutil.ReadAll(f)
+	if err != nil {
+		return c.String(http.StatusInternalServerError, "StatusInternalServerError")
+	}
+	var info Info
+	err = json.Unmarshal(jsonByte, &info)
+	if err != nil {
+		return c.String(http.StatusInternalServerError, "StatusInternalServerError")
+	}
+	return c.Render(http.StatusOK, "download.html", info)
 }
