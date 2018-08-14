@@ -6,6 +6,7 @@ import (
 	"os"
 	"io/ioutil"
 	"encoding/json"
+	"net/http"
 )
 type Info struct {
 	Version string `json:"version"`
