@@ -107,14 +107,14 @@ func ParseQueryString (c *ApiContext) bson.M {
 	area := c.DefaultQueryString("area", "", 1)
 	ret["query"] = query
 	if sort == "1" {
-		ret["sort"] = "+generated_at" // 收录时间降序
+		ret["sort"] = "-generated_at" // 收录时间降序
 	} else if sort == "2" {
-		ret["sort"] = "+released_at"  // 上映时间降序
+		ret["sort"] = "-released_at"  // 上映时间降序
 	} else if sort == "3" {
-		ret["sort"] = "+number"		  // 浏览次数降序
+		ret["sort"] = "-number"		  // 浏览次数降序
 	}
 
-	if pid != "none" && pid != "" {	  // 检查pid
+	if pid != "none" && pid != "" {	  // 检查pid 历史原因保留none
 		if bson.IsObjectIdHex(pid) {
 			ret["pid"] = bson.ObjectIdHex(pid)
 		}
