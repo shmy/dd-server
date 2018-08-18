@@ -8,54 +8,37 @@ import (
 	"github.com/shmy/dd-server/service"
 	"github.com/shmy/dd-server/model/video"
 	"math"
-	"github.com/shmy/dd-server/model/classification"
-	"github.com/globalsign/mgo"
 )
 
 func SearchSecret (c echo.Context) error {
 	cc := &util.ApiContext{c}
 	keyword := cc.DefaultQueryString("keyword", "", 1)
-	query := cc.DefaultQueryString("query", "2", 1)
-	sort := cc.DefaultQueryString("sort", "1", 1)
-	pid := cc.DefaultQueryString("pid", "", 1)
-	source := cc.DefaultQueryString("source", "", 1)
 	if keyword == "" {
 		return cc.Fail(errors.New("请输入搜索关键字"))
 	}
 	paging := util.ParsePaging(cc)
-	if query == "1" {
+	qs := util.ParseQueryString(cc)
+	if qs["query"] == "1" {
 		keyword = "^" + keyword
 	}
-	// 排序
-	if sort == "1" {
-		sort = "-generated_at"
-	} else {
-		sort = "+generated_at"
-	}
+
 	conditions := bson.M{
 		"keyword": &bson.RegEx{keyword, "ig"},
 	}
 	// 有分类
-	if pid != "" {
-		// 判断id
-		if !bson.IsObjectIdHex(pid) {
-			return cc.Fail(errors.New("ID格式不正确"))
-		}
-		objectId := bson.ObjectIdHex(pid)
-		// 查看分类是否存在
-		_, err := classification.M.FindById(objectId, nil)
-		if err != nil {
-			return cc.Fail(err)
-		}
-		if err == mgo.ErrNotFound {
-			return cc.Fail(errors.New("该分类不存在"))
-		}
-		conditions["pid"] = objectId
+	if qs["pid"] != nil {
+		conditions["pid"] = qs["pid"]
 	} else {
 		conditions["pid"] = &bson.M{"$in": service.RuleOut} // 默认排除不显示的
 	}
-	if source != "" { // 来源搜索
-		conditions["source"] = source
+	if qs["source"] != nil { // 来源搜索
+		conditions["source"] = qs["source"]
+	}
+	if qs["released_at"] != nil { // 年代搜索
+		conditions["released_at"] = qs["released_at"]
+	}
+	if qs["region"] != nil { // 区域搜索
+		conditions["region"] = qs["region"]
 	}
 	// 获取总数
 	total, err := video.M.Count(conditions)
@@ -65,16 +48,14 @@ func SearchSecret (c echo.Context) error {
 	v, err := video.M.Query(
 		conditions,
 		"name, thumbnail, latest, generated_at, _id, source",
-		sort,
+		qs["sort"],
 		paging.Offset,
 		paging.Limit,
 	)
 	if err != nil {
 		return cc.Fail(err)
 	}
-	//for _, el := range v { // 兼容旧版本
-	//	el["quality"] = el["latest"]
-	//}
+
 	return cc.Success(&echo.Map{
 		"result":    v,
 		"total":     total,

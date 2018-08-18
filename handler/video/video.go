@@ -55,6 +55,7 @@ func Recommended(c echo.Context) error {
 func List(c echo.Context) error {
 	cc := &util.ApiContext{c}
 	id := cc.Param("id")
+	qs := util.ParseQueryString(cc)
 	// 判断id
 	if !bson.IsObjectIdHex(id) {
 		return cc.Fail(errors.New("ID格式不正确"))
@@ -78,6 +79,15 @@ func List(c echo.Context) error {
 	if len(ids) > 1 {
 		conditions["pid"] = &bson.M{"$in": ids}
 	}
+	if qs["source"] != nil { // 来源搜索
+		conditions["source"] = qs["source"]
+	}
+	if qs["released_at"] != nil { // 年代搜索
+		conditions["released_at"] = qs["released_at"]
+	}
+	if qs["region"] != nil { // 区域搜索
+		conditions["region"] = qs["region"]
+	}
 	// 获取总数
 	total, err := video.M.Count(conditions)
 	if err != nil {
@@ -86,7 +96,7 @@ func List(c echo.Context) error {
 	paging := util.ParsePaging(cc) // 解析分页参数
 	v, err := video.M.Query(conditions,
 		"name, thumbnail, latest, _id, generated_at, source",
-		"-generated_at",
+		qs["sort"],
 		paging.Offset,
 		paging.Limit,
 	)
@@ -135,10 +145,6 @@ func Hot(c echo.Context) error {
 func Search(c echo.Context) error {
 	cc := &util.ApiContext{c}
 	keyword := cc.DefaultQueryString("keyword", "", 1)
-	//query := cc.DefaultQueryString("query", "2", 1)
-	//sort := cc.DefaultQueryString("sort", "1", 1)
-	//pid := cc.DefaultQueryString("pid", "", 1)
-	//source := cc.DefaultQueryString("source", "", 1)
 	if keyword == "" {
 		return cc.Fail(errors.New("请输入搜索关键字"))
 	}
@@ -196,9 +202,7 @@ func Search(c echo.Context) error {
 	if err != nil {
 		return cc.Fail(err)
 	}
-	//for _, el := range v { // 兼容旧版本
-	//	el["quality"] = el["latest"]
-	//}
+
 	return cc.Success(&echo.Map{
 		"result":    v,
 		"total":     total,
