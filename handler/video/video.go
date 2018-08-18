@@ -6,6 +6,7 @@ import (
 	"github.com/globalsign/mgo/bson"
 	"github.com/labstack/echo"
 	"github.com/lexkong/log"
+	"github.com/shmy/dd-server/handler/middleware/jwt"
 	"github.com/shmy/dd-server/model/classification"
 	"github.com/shmy/dd-server/model/hot"
 	"github.com/shmy/dd-server/model/video"
@@ -13,7 +14,6 @@ import (
 	"github.com/shmy/dd-server/util"
 	"math"
 	"time"
-	"github.com/shmy/dd-server/handler/middleware/jwt"
 )
 
 // 推荐列表
@@ -265,33 +265,37 @@ func Detail(c echo.Context) error {
 		red, _ := hot.M.FindOne(bson.M{
 			"vid": ret["_id"],
 		}, nil)
-		if red == nil {
-			u := bson.M{
-				"_id":        bson.NewObjectId(),
-				"name":       ret["name"],
-				"index":      1,
-				"vid":        ret["_id"],
-				"created_at": time.Now(),
-				"updated_at": time.Now(),
-			}
-			_, err := hot.M.Insert(u)
-			if err != nil {
-				log.Warn("ADD HOT:" + err.Error())
-			}
-		} else {
-			var index int
-			if red["index"] == nil {
-				index = 0
-			}
-			index = red["index"].(int)
-			_, err := hot.M.UpdateById(red["_id"], bson.M{
-				"index": index + 1,
-				"updated_at": time.Now(),
-			})
-			if err != nil {
-				log.Warn("UPDATE HOT:" + err.Error())
+		if !service.IsInRuleOut(ret["pid"]) { // 如果不是被屏蔽的 添加到热搜
+
+			if red == nil {
+				u := bson.M{
+					"_id":        bson.NewObjectId(),
+					"name":       ret["name"],
+					"index":      1,
+					"vid":        ret["_id"],
+					"created_at": time.Now(),
+					"updated_at": time.Now(),
+				}
+				_, err := hot.M.Insert(u)
+				if err != nil {
+					log.Warn("ADD HOT:" + err.Error())
+				}
+			} else {
+				var index int
+				if red["index"] == nil {
+					index = 0
+				}
+				index = red["index"].(int)
+				_, err := hot.M.UpdateById(red["_id"], bson.M{
+					"index":      index + 1,
+					"updated_at": time.Now(),
+				})
+				if err != nil {
+					log.Warn("UPDATE HOT:" + err.Error())
+				}
 			}
 		}
+
 	}
 	// 获取分类
 	ret["classify"], err = classification.M.FindById(ret["pid"], "name")
@@ -299,10 +303,9 @@ func Detail(c echo.Context) error {
 		return cc.Fail(err)
 	}
 	// TODO 自动读取广告
-	ret["ads"] = []bson.M {
+	ret["ads"] = []bson.M{
 		{
-			"image":
-			"https://dd.shmy.tech/static/ads/eye/eye.webp",
+			"image":  "https://dd.shmy.tech/static/ads/eye/eye.webp",
 			"height": 0.666,
 			"action": bson.M{
 				"type": "webview",
