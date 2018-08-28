@@ -8,6 +8,7 @@ import (
 	"github.com/shmy/dd-server/service"
 	"github.com/shmy/dd-server/model/video"
 	"math"
+	"time"
 )
 
 func SearchSecret (c echo.Context) error {
@@ -107,17 +108,22 @@ func Index (c echo.Context) error {
 		"_id, name, thumbnail, latest, generated_at, source",
 		"-generated_at",
 		0,
-		8,
+		16,
 	)
 	if err != nil {
 		return cc.Fail(err)
 	}
 	// 获取最热资源结果集
+	//old, _ := time.ParseDuration("-15d")
+	conditions["generated_at"] = bson.M{
+		// 十五天热门
+		"$gte": time.Now().Add(-time.Hour * 24 * 15),
+	}
 	result["hots"], err = video.M.Query(conditions,
 		"_id, name, thumbnail, latest, generated_at",
 		"-number",
 		0,
-		8,
+		16,
 	)
 	if err != nil {
 		return cc.Fail(err)

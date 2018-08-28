@@ -1,0 +1,93 @@
+package main
+
+import (
+	"crypto/des"
+	"encoding/hex"
+	"bytes"
+	"fmt"
+	"flag"
+	"crypto/cipher"
+	"strings"
+)
+
+func main () {
+	way := flag.String("t", "", "加密 e 解密 d")
+	data := flag.String("d", "", "待加密/解密的字符串")
+	key := flag.String("k", "", "秘钥8个字符")
+	flag.Parse()
+	if *data == "" {
+		fmt.Println("请输入待加密字符串")
+		return
+	}
+	if *key == "" {
+		fmt.Println("请输入秘钥")
+		return
+	}
+	if len(*key) != 8 {
+		fmt.Println("秘钥需要8个字符")
+		return
+	}
+	var r string
+	var err error
+	if *way == "e" {
+		r, err = Encrypt(*data, *key)
+	} else if *way == "d" {
+		r, err = Decrypt(*data, *key)
+	} else {
+		fmt.Println("未知的类型")
+		return
+	}
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println(r)
+}
+// 明文补码算法
+func PKCS5Padding(cipherText []byte, blockSize int) []byte {
+	padding := blockSize - len(cipherText) % blockSize
+	padText := bytes.Repeat([]byte{byte(padding)}, padding)
+	return append(cipherText, padText...)
+}
+// 明文减码算法
+func PKCS5UnPadding(origData []byte) []byte {
+	length := len(origData)
+	unPadding := int(origData[length-1])
+	return origData[:(length - unPadding)]
+}
+
+// 加密
+func Encrypt(src string, key string) (string, error) {
+	data := []byte(src)
+	keyByte := []byte(key)
+	block, err := des.NewCipher(keyByte )
+	if err != nil {
+		return "", err
+	}
+	data = PKCS5Padding(data , block.BlockSize())
+	//获取CBC加密模式
+	iv := []byte("00000000")
+	mode := cipher.NewCBCEncrypter(block, iv)
+	out := make([]byte, len(data))
+	mode.CryptBlocks(out, data)
+	return strings.ToUpper(hex.EncodeToString(out)), nil
+}
+// 解密
+func Decrypt(src string, key string) (string, error) {
+	keyByte := []byte(key)
+	data, err := hex.DecodeString(src)
+	if err != nil {
+		return "", err
+	}
+	block, err := des.NewCipher(keyByte)
+	if err != nil {
+		return "", err
+	}
+	iv := []byte("00000000")
+	mode := cipher.NewCBCDecrypter(block, iv)
+	plaintext := make([]byte, len(data))
+	mode.CryptBlocks(plaintext, data)
+	plaintext = PKCS5UnPadding(plaintext)
+	return string(plaintext), nil
+}
