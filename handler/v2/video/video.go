@@ -108,7 +108,7 @@ func Index (c echo.Context) error {
 		"_id, name, thumbnail, latest, generated_at, source",
 		"-generated_at",
 		0,
-		16,
+		12,
 	)
 	if err != nil {
 		return cc.Fail(err)
@@ -123,7 +123,7 @@ func Index (c echo.Context) error {
 		"_id, name, thumbnail, latest, generated_at",
 		"-number",
 		0,
-		16,
+		12,
 	)
 	if err != nil {
 		return cc.Fail(err)
