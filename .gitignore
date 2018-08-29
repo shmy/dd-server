@@ -4,6 +4,7 @@
 /log/
 /bin/
 /public/web_client/
+/public/web_admin/
 /config.prod.yml
 /update.sh
 /update2.sh
