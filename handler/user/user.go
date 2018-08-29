@@ -68,7 +68,7 @@ func SignUp(c echo.Context) error {
 	}
 	objectId := bson.NewObjectId()
 	// 生成token
-	token, err := util.GenerateTheToken(objectId)
+	token, err := util.GenerateTheToken(objectId, "client")
 	if err != nil {
 		return cc.Fail(err)
 	}
@@ -128,7 +128,7 @@ func SignIn(c echo.Context) error {
 		return cc.Fail(errors.New("用户名或密码错误"))
 	}
 	// 生成token
-	token, err := util.GenerateTheToken(u["_id"])
+	token, err := util.GenerateTheToken(u["_id"], "client")
 	if err != nil {
 		return cc.Fail(err)
 	}

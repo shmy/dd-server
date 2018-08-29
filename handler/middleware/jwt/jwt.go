@@ -6,11 +6,16 @@ import (
 	"github.com/globalsign/mgo/bson"
 	"github.com/labstack/echo"
 	"github.com/shmy/dd-server/model/user"
+	"github.com/shmy/dd-server/model/admin"
 	"net/http"
 	"reflect"
 	"strings"
+	"errors"
 )
-
+var models = []interface{}{
+	user.M,
+	admin.M,
+}
 // 重写echo 的 JWT 中间件
 type (
 	// Skipper defines a function to skip middleware. Returning true skips processing
@@ -101,15 +106,15 @@ var (
 //
 // See: https://jwt.io/introduction
 // See `JWTConfig.TokenLookup`
-func JWT(key string, optional bool) echo.MiddlewareFunc {
+func JWT(key string, optional bool, m int) echo.MiddlewareFunc {
 	c := DefaultJWTConfig
 	c.SigningKey = []byte(key)
-	return JWTWithConfig(c, optional)
+	return JWTWithConfig(c, optional, m)
 }
 
 // JWTWithConfig returns a JWT auth middleware with config.
 // See: `JWT()`.
-func JWTWithConfig(config JWTConfig, optional bool) echo.MiddlewareFunc {
+func JWTWithConfig(config JWTConfig, optional bool, m int) echo.MiddlewareFunc {
 	// Defaults
 	if config.Skipper == nil {
 		config.Skipper = DefaultJWTConfig.Skipper
@@ -173,7 +178,23 @@ func JWTWithConfig(config JWTConfig, optional bool) echo.MiddlewareFunc {
 			if err == nil && token.Valid {
 				id := token.Claims.(*ClienJwtClaims).Id
 				// 查询数据库
-				ret, err := user.M.FindById(id, nil)
+				model := models[m]
+				var ret bson.M
+				var err error
+				switch model.(type) {
+					case user.Model:
+						realModel := model.(user.Model)
+						ret, err = realModel.FindById(id, nil)
+					break
+					case admin.Model:
+						realModel := model.(admin.Model)
+						ret, err = realModel.FindById(id, nil)
+					break
+				default:
+					return errors.New("内部错误")
+				}
+				//d := t.(admin.Model)
+				//ret, err := realModel.FindById(id, nil)
 				if err != nil {
 					return err
 				}

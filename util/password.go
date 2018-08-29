@@ -3,6 +3,8 @@ package util
 import (
 	"golang.org/x/crypto/scrypt"
 	"unsafe"
+	"crypto/md5"
+	"fmt"
 )
 
 const (
@@ -16,4 +18,10 @@ func GenerateThePassword(password string) *string {
 		return nil
 	}
 	return (*string)(unsafe.Pointer(&dk))
+}
+
+func GenerateThePasswordWithMD5 (password string) *string {
+	s :=  md5.Sum([]byte(password))
+	pw := fmt.Sprintf("%x", s)
+	return &pw
 }

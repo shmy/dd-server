@@ -30,34 +30,34 @@ func GetRoutes (apiClient *echo.Group) {
 	// 大家都在看
 	apiClient.GET("video/activity", activity.List) // ok
 	// 个人播放记录
-	apiClient.GET("video/record", activity.Record, jwt.JWT(secret, false)) // ok
+	apiClient.GET("video/record", activity.Record, jwt.JWT(secret, false ,0)) // ok
 	// 视频搜索
 	apiClient.GET("video/search", video.Search) // ok
 	// 视频详情
-	apiClient.GET("video/:id", video.Detail, jwt.JWT(secret, true)) // ok
+	apiClient.GET("video/:id", video.Detail, jwt.JWT(secret, true ,0)) // ok
 	// 用户注册
 	apiClient.POST("profile/sign_up", user.SignUp) // ok
 	// 用户登录
 	apiClient.POST("profile/sign_in", user.SignIn) // ok
 	// 个人详情
-	apiClient.GET("profile/detail", user.Detail, jwt.JWT(secret, false)) // ok
+	apiClient.GET("profile/detail", user.Detail, jwt.JWT(secret, false ,0)) // ok
 	// 用户登出
-	apiClient.GET("profile/sign_out", user.SignOut, jwt.JWT(secret, false)) // ok
+	apiClient.GET("profile/sign_out", user.SignOut, jwt.JWT(secret, false ,0)) // ok
 
 	// 获取所有收藏夹
-	apiClient.GET("favorite", favorite.All, jwt.JWT(secret, false)) // ok
+	apiClient.GET("favorite", favorite.All, jwt.JWT(secret, false ,0)) // ok
 	// 更新一个收藏夹
-	apiClient.PUT("favorite/:id", favorite.Update, jwt.JWT(secret, false)) // ok
+	apiClient.PUT("favorite/:id", favorite.Update, jwt.JWT(secret, false ,0)) // ok
 	// 向收藏夹添加一个视频
-	apiClient.POST("favorite/add_video", favorite.AddToFavorite, jwt.JWT(secret, false)) // ok
+	apiClient.POST("favorite/add_video", favorite.AddToFavorite, jwt.JWT(secret, false ,0)) // ok
 	// 移除一个收藏的视频
-	apiClient.POST("favorite/remove_video", favorite.RemoveFromFavorite, jwt.JWT(secret, false)) // ok
+	apiClient.POST("favorite/remove_video", favorite.RemoveFromFavorite, jwt.JWT(secret, false ,0)) // ok
 	// 新建一个收藏夹
-	apiClient.POST("favorite", favorite.Create, jwt.JWT(secret, false)) // ok
+	apiClient.POST("favorite", favorite.Create, jwt.JWT(secret, false ,0)) // ok
 	// 移除一个收藏夹
-	apiClient.DELETE("favorite/:id", favorite.Remove, jwt.JWT(secret, false)) // ok
+	apiClient.DELETE("favorite/:id", favorite.Remove, jwt.JWT(secret, false ,0)) // ok
 	// 根据收藏夹id获取分页列表
-	apiClient.GET("collection/:id", collection.List, jwt.JWT(secret, false)) // ok
+	apiClient.GET("collection/:id", collection.List, jwt.JWT(secret, false ,0)) // ok
 
 	// 根据id获取播单详情
 	apiClient.GET("series/:id", series.SeriesDetail) // ok
@@ -65,6 +65,6 @@ func GetRoutes (apiClient *echo.Group) {
 	// v2版本首页数据
 	apiClient.GET("v2/video/index", v2.Index) // ok
 	// v2版本秘密花园搜索
-	apiClient.GET("v2/video/search_secret", v2.SearchSecret, jwt.JWT(secret, false)) // ok
+	apiClient.GET("v2/video/search_secret", v2.SearchSecret, jwt.JWT(secret, false, 0)) // ok
 
 }

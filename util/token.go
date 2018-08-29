@@ -6,9 +6,9 @@ import (
 	"time"
 )
 
-func GenerateTheToken(id interface{}) (string, error) {
-	var overdue = viper.GetInt64("jsonwebtoken.client.overdue")
-	var secret = viper.GetString("jsonwebtoken.client.secret")
+func GenerateTheToken(id interface{}, platform string) (string, error) {
+	var overdue = viper.GetInt64("jsonwebtoken." + platform + ".overdue")
+	var secret = viper.GetString("jsonwebtoken." + platform + ".secret")
 	token := jwt.New(jwt.SigningMethodHS256)
 	// Set claims
 	claims := token.Claims.(jwt.MapClaims)

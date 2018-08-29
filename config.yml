@@ -15,6 +15,9 @@ jsonwebtoken:
   client:
     secret: "`!#-$+&*@(^&)`"      # 密钥
     overdue: 86400                # 过期时间 秒
+  admin:
+    secret: "pandahao123..."      # 密钥
+    overdue: 86400                # 过期时间 秒
 log:
   writers: file,stdout
   logger_level: INFO
