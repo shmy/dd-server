@@ -51,6 +51,14 @@ func List(c echo.Context) error {
 	if qs["region"] != nil { // 区域搜索
 		conditions["region"] = qs["region"]
 	}
+	// 关键字搜索
+	keyword := cc.DefaultQueryString("keyword", "", 1)
+	if keyword != "" {
+		if qs["query"] == "1" {
+			keyword = "^" + keyword
+		}
+		conditions["keyword"] = &bson.RegEx{keyword, "ig"}
+	}
 	// 获取总数
 	total, err := video.M.Count(conditions)
 	if err != nil {
