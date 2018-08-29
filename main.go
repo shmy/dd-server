@@ -41,6 +41,7 @@ func main() {
 	e.Debug = runmode == "debug"
 	e.HTTPErrorHandler = func(err error, c echo.Context) {
 		code := http.StatusInternalServerError
+		logback := false
 		var message interface{} = "Internal Server Error"
 		if he, ok := err.(*echo.HTTPError); ok {
 			code = he.Code
@@ -49,8 +50,14 @@ func main() {
 		if code == http.StatusInternalServerError {
 			log.Error("StatusInternalServerError ", err)
 		}
+		// 不要出错 转换为200
+		if code == http.StatusUnauthorized {
+			code = http.StatusOK
+			logback = true
+		}
 		c.JSON(code, map[string]interface{}{
 			"success": false,
+			"logback": logback,
 			"payload": nil,
 			"message": message,
 		})

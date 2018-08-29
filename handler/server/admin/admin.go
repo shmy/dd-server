@@ -2,7 +2,6 @@ package admin
 
 import (
 	"errors"
-	"fmt"
 	"github.com/globalsign/mgo/bson"
 	"github.com/labstack/echo"
 	"github.com/shmy/dd-server/model/admin"
@@ -33,7 +32,6 @@ func SignIn(c echo.Context) error {
 		"username": username,
 		"password": *util.GenerateThePasswordWithMD5(password),
 	}, nil)
-	fmt.Println(username, *util.GenerateThePasswordWithMD5(password))
 	if err != nil {
 		return cc.Fail(err)
 	}
