@@ -7,6 +7,7 @@ import (
 	"strings"
 	"io/ioutil"
 	"encoding/json"
+	"github.com/globalsign/mgo/bson"
 )
 
 type ApiContext struct {
@@ -41,6 +42,7 @@ func (c *ApiContext) getJsonBody() map[string]interface{} {
 	c.Set("jsonData", ret)
 	return ret
 }
+//---------json-----------
 // 获取所有json
 func (c *ApiContext) GetJSONBody () map[string]interface{} {
 	return c.getJsonBody()
@@ -53,6 +55,72 @@ func (c *ApiContext) GetJSONValue (key string) interface{} {
 	}
 	return r[key]
 }
+// string
+func (c *ApiContext) GetJSONString (key string) *string {
+	r := c.GetJSONValue(key)
+	if v, ok := r.(string); ok {
+		return &v
+	}
+	return nil
+}
+// []string
+func (c *ApiContext) GetJSONStringList (key string) *[]string {
+	r := c.GetJSONValue(key)
+	if v, ok := r.([]string); ok {
+		return &v
+	}
+	return nil
+}
+// int
+func (c *ApiContext) GetJSONInt (key string) *int {
+	r := c.GetJSONValue(key)
+	if v, ok := r.(int); ok {
+		return &v
+	}
+	return nil
+}
+// []int
+func (c *ApiContext) GetJSONIntList (key string) *[]int {
+	r := c.GetJSONValue(key)
+	if v, ok := r.([]int); ok {
+		return &v
+	}
+	return nil
+}
+// map
+func (c *ApiContext) GetJSONMap (key string) *bson.M {
+	r := c.GetJSONValue(key)
+	if v, ok := r.(bson.M); ok {
+		return &v
+	}
+	return nil
+}
+// []map
+func (c *ApiContext) GetJSONMapList (key string) *[]bson.M {
+	r := c.GetJSONValue(key)
+	if v, ok := r.([]bson.M); ok {
+		return &v
+	}
+	return nil
+}
+// bool
+func (c *ApiContext) GetJSONBool (key string) *bool {
+	r := c.GetJSONValue(key)
+	if v, ok := r.(bool); ok {
+		return &v
+	}
+	return nil
+}
+// []bool
+func (c *ApiContext) GetJSONBoolList (key string) *[]bool {
+	r := c.GetJSONValue(key)
+	if v, ok := r.([]bool); ok {
+		return &v
+	}
+	return nil
+}
+
+//---------json-----------
 // 成功
 func (c *ApiContext) Success(payload interface{}) error {
 	return c.JSON(http.StatusOK, &echo.Map{
