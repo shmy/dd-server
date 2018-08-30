@@ -11,7 +11,6 @@ import (
 	"regexp"
 	"time"
 	"unicode/utf8"
-	"math"
 )
 const KEY = "SCU29489T427d03a73594b376a9471a70fc9c23555b4b2b37d718d"
 // 注册
@@ -176,36 +175,5 @@ func SignOut(c echo.Context) error {
 	return cc.Success(echo.Map{
 		"token":    "",
 		"username": "",
-	})
-}
-
-
-func List (c echo.Context) error {
-	cc := util.ApiContext{ c }
-	// 解析分页
-	paging := util.ParsePaging(&cc)
-	// 获取总数
-	total, err := user.M.Count(nil)
-	if err != nil {
-		return cc.Fail(err)
-	}
-	// 获取结果集
-	v, err := user.M.Query(
-		nil,
-		"username, created_at",
-		"-created_at",
-		paging.Offset,
-		paging.Limit,
-	)
-	if err != nil {
-		return cc.Fail(err)
-	}
-
-	return cc.Success(&echo.Map{
-		"result":    v,
-		"total":     total,
-		"page":      paging.Page,
-		"per_page":  paging.Limit,
-		"last_page": math.Ceil(float64(total) / float64(paging.Limit)),
 	})
 }

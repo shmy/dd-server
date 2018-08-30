@@ -2,7 +2,7 @@ package server
 
 import (
 	"github.com/labstack/echo"
-	"github.com/shmy/dd-server/handler/user"
+	"github.com/shmy/dd-server/handler/server/user"
 	"github.com/shmy/dd-server/handler/server/video"
 	"github.com/shmy/dd-server/handler/server/admin"
 	"github.com/shmy/dd-server/handler/middleware/jwt"
@@ -20,5 +20,5 @@ func GetRoutes (apiServer *echo.Group) {
 	// 修改视频
 	apiServer.PUT("video/:id", video.Update, jwt.JWT(secret, false ,1)) // ok
 	// 登录
-	apiServer.POST("admin/sign_in", admin.SignIn) // ok
+	apiServer.POST("sign_in", admin.SignIn) // ok
 }
