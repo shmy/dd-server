@@ -13,17 +13,19 @@ import (
 // 登录
 func SignIn(c echo.Context) error {
 	cc := &util.ApiContext{c}
-	username := cc.DefaultFormValueString("username", "", 1)
-	password := cc.DefaultFormValueString("password", "", 1)
-	if username == "" {
+	_username := cc.GetJSONValue("username")
+	_password := cc.GetJSONValue("password")
+	if _username == nil {
 		return cc.Fail(errors.New("请输入用户名"))
 	}
+	username := _username.(string)
 	if !regexp.MustCompile("^[a-zA-Z0-9_-]{4,16}$").MatchString(username) {
 		return cc.Fail(errors.New("用户名只能包含字母，数字和下划线，至少4个字符，最多16个字符"))
 	}
-	if password == "" {
+	if _password == nil {
 		return cc.Fail(errors.New("请输入密码"))
 	}
+	password := _password.(string)
 	if utf8.RuneCountInString(password) < 6 {
 		return cc.Fail(errors.New("密码至少6个字符"))
 	}

@@ -17,6 +17,8 @@ func GetRoutes (apiServer *echo.Group) {
 	apiServer.GET("classification/:id", video.List, jwt.JWT(secret, false ,1)) // ok
 	// 视频详情
 	apiServer.GET("video/:id", video.Detail, jwt.JWT(secret, false ,1)) // ok
+	// 修改视频
+	apiServer.PUT("video/:id", video.Update, jwt.JWT(secret, false ,1)) // ok
 	// 登录
 	apiServer.POST("admin/sign_in", admin.SignIn) // ok
 }
