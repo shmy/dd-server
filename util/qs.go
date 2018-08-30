@@ -82,6 +82,9 @@ var years = bson.M{
 	"更早": bson.M{
 		"$lte": "1699", // <= 1699
 	},
+	"其他": bson.M{
+		"$gt": "2018", // <= 2018
+	},
 }
 var areas = bson.M{
 	"大陆": "大陆",
