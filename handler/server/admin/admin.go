@@ -13,26 +13,24 @@ import (
 // 登录
 func SignIn(c echo.Context) error {
 	cc := &util.ApiContext{c}
-	_username := cc.GetJSONValue("username")
-	_password := cc.GetJSONValue("password")
-	if _username == nil {
+	username := cc.GetJSONString("username")
+	password := cc.GetJSONString("password")
+	if username == nil {
 		return cc.Fail(errors.New("请输入用户名"))
 	}
-	username := _username.(string)
-	if !regexp.MustCompile("^[a-zA-Z0-9_-]{4,16}$").MatchString(username) {
+	if !regexp.MustCompile("^[a-zA-Z0-9_-]{4,16}$").MatchString(*username) {
 		return cc.Fail(errors.New("用户名只能包含字母，数字和下划线，至少4个字符，最多16个字符"))
 	}
-	if _password == nil {
+	if password == nil {
 		return cc.Fail(errors.New("请输入密码"))
 	}
-	password := _password.(string)
-	if utf8.RuneCountInString(password) < 6 {
+	if utf8.RuneCountInString(*password) < 6 {
 		return cc.Fail(errors.New("密码至少6个字符"))
 	}
 	// 判断用户是否存在
 	u, err := admin.M.FindOne(bson.M{
 		"username": username,
-		"password": *util.GenerateThePasswordWithMD5(password),
+		"password": *util.GenerateThePasswordWithMD5(*password),
 	}, nil)
 	if err != nil {
 		return cc.Fail(err)
