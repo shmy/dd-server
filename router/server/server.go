@@ -7,6 +7,7 @@ import (
 	"github.com/shmy/dd-server/handler/server/admin"
 	"github.com/shmy/dd-server/handler/middleware/jwt"
 	"github.com/spf13/viper"
+	"github.com/shmy/dd-server/handler/server/ad"
 )
 
 func GetRoutes (apiServer *echo.Group) {
@@ -21,4 +22,10 @@ func GetRoutes (apiServer *echo.Group) {
 	apiServer.PUT("video/:id", video.Update, jwt.JWT(secret, false ,1)) // ok
 	// 登录
 	apiServer.POST("sign_in", admin.SignIn) // ok
+	// 广告列表
+	apiServer.GET("ad", ad.List, jwt.JWT(secret, false ,1)) // ok
+	// 新增广告
+	apiServer.POST("ad", ad.Create, jwt.JWT(secret, false ,1)) // ok
+	// 删除广告
+	apiServer.DELETE("ad/:id", ad.Delete, jwt.JWT(secret, false ,1)) // ok
 }
