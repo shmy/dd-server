@@ -84,15 +84,12 @@ func Index (c echo.Context) error {
 			},
 		},
 		{
-			"name": "漫威宇宙十年电影合集",
+			"name": "🙏🙏救救这个女孩🙏🙏",
 			"image":
-			"https://dd.shmy.tech/static/web_client/static/img/1.df0423e.jpg",
+			"http://cf.alioss.shuidichou.com/img/ck/20181012/d0e0972a-db85-44e1-b24c-29b091018ea8!cf_mtr_200_nw",
 			"action": bson.M {
-				"type": "series",
-				"data": bson.M{
-					"_id": "5b716e8fb8dacd1f59f942bb",
-					"name": "漫威宇宙十年电影合集",
-				},
+				"type": "browser",
+				"data": "https://www.shuidichou.com/cf/contribute/caff17ed-905e-460b-a65a-8f0e943d47ae?channel=wx_charity_hy",
 			},
 		},
 	}
@@ -133,11 +130,11 @@ func Index (c echo.Context) error {
 	result["ads"] = []bson.M{
 		{
 			"image":
-			"https://img.zcool.cn/community/0145735928d586a801216a3e141620.png@1280w_1l_2o_100sh.webp",
+			"http://cf.alioss.shuidichou.com/img/ck/20181012/d0e0972a-db85-44e1-b24c-29b091018ea8!cf_mtr_200_nw",
 			"height": 0.4,
 			"action": bson.M{
-				"type": "alert",
-				"data": "该广告位招租，联系QQ: 2635970493",
+				"type": "browser",
+				"data": "https://www.shuidichou.com/cf/contribute/caff17ed-905e-460b-a65a-8f0e943d47ae?channel=wx_charity_hy",
 			},
 		},
 		{
