@@ -10,16 +10,16 @@ import (
 
 func Load(e *echo.Echo) {
 
-	e.GET("/sw.js", func(c echo.Context) error {
-		return c.File("public/web_client/build.sw.js")
-	})
-	// 根路径重定向
+	//e.GET("/sw.js", func(c echo.Context) error {
+	//	return c.File("public/web_client/build.sw.js")
+	//})
+	// 根路径重定向 2018-10-20 重定项到新域名
 	e.GET("/", func(c echo.Context) error {
-		return c.Redirect(302, "/client")
+		return c.Redirect(301, "https://v.shmy.tech")
 	})
-	// 客户端路由
+	// 客户端路由 2018-10-20 重定项到新域名
 	e.GET("/client*", func(c echo.Context) error {
-		return c.File("public/web_client/index.html")
+		return c.Redirect(301, "https://v.shmy.tech")
 	})
 	// 管理端路由
 	e.GET("/admin*", func(c echo.Context) error {
