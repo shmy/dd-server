@@ -1,17 +1,17 @@
 package video
 
 import (
-	"github.com/labstack/echo"
-	"github.com/shmy/dd-server/util"
-	"github.com/globalsign/mgo/bson"
 	"errors"
-	"github.com/shmy/dd-server/service"
+	"github.com/globalsign/mgo/bson"
+	"github.com/labstack/echo"
 	"github.com/shmy/dd-server/model/video"
+	"github.com/shmy/dd-server/service"
+	"github.com/shmy/dd-server/util"
 	"math"
 	"time"
 )
 
-func SearchSecret (c echo.Context) error {
+func SearchSecret(c echo.Context) error {
 	cc := &util.ApiContext{c}
 	keyword := cc.DefaultQueryString("keyword", "", 1)
 	if keyword == "" {
@@ -65,8 +65,8 @@ func SearchSecret (c echo.Context) error {
 		"last_page": math.Ceil(float64(total) / float64(paging.Limit)),
 	})
 }
-func Index (c echo.Context) error {
-	cc := util.ApiContext{ c }
+func Index(c echo.Context) error {
+	cc := util.ApiContext{c}
 	_id := cc.DefaultQueryString("id", "", true)
 	if !bson.IsObjectIdHex(_id) {
 		return cc.Fail(errors.New("ID格式不正确"))
@@ -75,21 +75,31 @@ func Index (c echo.Context) error {
 	var result = make(bson.M)
 	result["banner"] = []bson.M{
 		{
-			"name": "支付宝又双叒叕发红包了，天天可领，戳我去领",
-			"image":
-			"https://dd.shmy.tech/static/ads/alipay/alipay_redpack.png",
-			"action": bson.M {
+			"name":  "支付宝又双叒叕发红包了，天天可领，戳我去领",
+			"image": "https://dd.shmy.tech/static/ads/alipay/alipay_redpack.png",
+			"action": bson.M{
 				"type": "alipay_readpack",
 				"data": "Nl7FJ976sg",
 			},
 		},
 		{
-			"name": "🙏🙏救救这个女孩🙏🙏",
-			"image":
-			"http://cf.alioss.shuidichou.com/img/ck/20181012/d0e0972a-db85-44e1-b24c-29b091018ea8!cf_mtr_200_nw",
-			"action": bson.M {
-				"type": "browser",
-				"data": "https://www.shuidichou.com/cf/contribute/caff17ed-905e-460b-a65a-8f0e943d47ae?channel=wx_charity_hy",
+			"name":  "测试播单",
+			"image": "https://dd.shmy.tech/static/ads/marvel.jpg",
+			"action": bson.M{
+				"type": "series",
+				"data": bson.M{
+					"_id":  "5b716e8fb8dacd1f59f942bb",
+					"name": "测试播单",
+				},
+			},
+		},
+		{
+			"name":  "关怀你的眼睛",
+			"image": "https://dd.shmy.tech/static/ads/eye/eye.webp",
+			//"height": 0.666,
+			"action": bson.M{
+				"type": "webview",
+				"data": "https://dd.shmy.tech/static/ads/eye",
 			},
 		},
 	}
@@ -128,18 +138,27 @@ func Index (c echo.Context) error {
 	// 添加两条广告
 	// TODO 自动读取广告
 	result["ads"] = []bson.M{
+		// 眼贴广告
 		{
-			"image":
-			"http://cf.alioss.shuidichou.com/img/ck/20181012/d0e0972a-db85-44e1-b24c-29b091018ea8!cf_mtr_200_nw",
-			"height": 0.4,
+			"image":  "https://dd.shmy.tech/static/ads/eye/eye.webp",
+			"height": 0.666,
 			"action": bson.M{
-				"type": "browser",
-				"data": "https://www.shuidichou.com/cf/contribute/caff17ed-905e-460b-a65a-8f0e943d47ae?channel=wx_charity_hy",
+				"type": "webview",
+				"data": "https://dd.shmy.tech/static/ads/eye",
 			},
 		},
+		//{
+		//	"image":
+		//	"http://cf.alioss.shuidichou.com/img/ck/20181012/d0e0972a-db85-44e1-b24c-29b091018ea8!cf_mtr_200_nw",
+		//	"height": 0.4,
+		//	"action": bson.M{
+		//		"type": "browser",
+		//		"data": "https://www.shuidichou.com/cf/contribute/caff17ed-905e-460b-a65a-8f0e943d47ae?channel=wx_charity_hy",
+		//	},
+		//},
+		// 京东广告
 		{
-			"image":
-			"https://dd.shmy.tech/static/ads/jd/jd.webp",
+			"image":  "https://dd.shmy.tech/static/ads/jd/jd.webp",
 			"height": 0.24,
 			"action": bson.M{
 				"type": "webview",

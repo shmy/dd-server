@@ -124,7 +124,7 @@ func Hot(c echo.Context) error {
 	old := now.Add(dur)
 	u, err := hot.M.Query(
 		bson.M{
-			"updated_at": bson.M{
+			"created_at": bson.M{
 				"$gte": old,
 				"$lte": now,
 			},
